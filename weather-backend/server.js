@@ -1,12 +1,20 @@
 const express = require('express');
 const fs = require('fs');
-const http = require('http');
 const app = express();
 const PORT = 3000;
 
+let cityData = [];
+
 // Şehir verisini dosyadan okuma
-const rawData = fs.readFileSync('./city.list.json', 'utf8');
-const cityData = JSON.parse(rawData);
+try {
+  console.log("Veri dosyasını okuma başlatılıyor...");
+  const rawData = fs.readFileSync('./city.list.json', 'utf8');
+  cityData = JSON.parse(rawData);
+  console.log("Veri dosyası başarıyla okundu.");
+} catch (error) {
+  console.error('Dosya okuma hatası:', error);
+  process.exit(1); // Sunucunun başlamasını engelle
+}
 
 // API'yi oluşturma
 app.get('/api/cities', (req, res) => {
@@ -17,16 +25,8 @@ app.get('/api/cities', (req, res) => {
   res.json([...new Set(filteredCities)]);
 });
 
-// HTTP sunucusunu oluşturma ve zaman aşımı ayarlama
-const server = http.createServer(app);
-
-// Zaman aşımı süresi ayarlama (5 dakika)
-server.setTimeout(1000 * 60 * 5, () => {
-  console.log('Sunucu 5 dakika boyunca işlem yapılmadığı için zaman aşımına uğradı.');
-});
-
 // Sunucuyu başlatma
-server.listen(PORT, () => {
+app.listen(PORT, () => {
   console.log(`✅ Sunucu çalışıyor: http://localhost:${PORT}`);
 }).on('error', (err) => {
   console.error('Sunucu hatası: ', err);
