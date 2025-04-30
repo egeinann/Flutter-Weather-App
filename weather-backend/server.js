@@ -1,33 +1,53 @@
 const express = require('express');
-const fs = require('fs');
+const axios = require('axios');
+const cors = require('cors');
+
 const app = express();
 const PORT = 3000;
 
-let cityData = [];
+// API anahtarını burada saklayalım
+const API_KEY = '743039ab6e01c2de7ad71b56d95a428d';
 
-// Şehir verisini dosyadan okuma
-try {
-  console.log("Veri dosyasını okuma başlatılıyor...");
-  const rawData = fs.readFileSync('./city.list.json', 'utf8');
-  cityData = JSON.parse(rawData);
-  console.log("Veri dosyası başarıyla okundu.");
-} catch (error) {
-  console.error('Dosya okuma hatası:', error);
-  process.exit(1); // Sunucunun başlamasını engelle
-}
+app.use(cors());
 
-// API'yi oluşturma
-app.get('/api/cities', (req, res) => {
-  const query = req.query.q?.toLowerCase() || '';
-  const filteredCities = cityData
-    .filter(city => city.name.toLowerCase().includes(query))
-    .map(city => city.name);
-  res.json([...new Set(filteredCities)]);
+app.get('/weather', async (req, res) => {
+  const city = req.query.city;
+
+  if (!city) {
+    return res.status(400).json({ message: 'Şehir adı gerekli' });
+  }
+
+  try {
+    const response = await axios.get(
+      `https://api.openweathermap.org/data/2.5/weather`,
+      {
+        params: {
+          q: city,
+          appid: API_KEY,
+          units: 'metric',
+          lang: 'tr',
+        },
+      }
+    );
+
+    // Gelen veriyi 'WeatherModel' formatında dönüştürüp gönderiyoruz
+    const weatherData = {
+      cityName: response.data.name,
+      country: response.data.sys.country,
+      temperature: response.data.main.temp,
+      humidity: response.data.main.humidity,
+      windSpeed: response.data.wind.speed,
+      description: response.data.weather[0].description,
+    };
+
+    res.json(weatherData); // Veriyi model formatında geri döndürüyoruz
+  } catch (error) {
+    res.status(500).json({
+      message: error.response?.data?.message || 'Hava durumu alınamadı',
+    });
+  }
 });
 
-// Sunucuyu başlatma
 app.listen(PORT, () => {
-  console.log(`✅ Sunucu çalışıyor: http://localhost:${PORT}`);
-}).on('error', (err) => {
-  console.error('Sunucu hatası: ', err);
+  console.log(`Sunucu çalışıyor: http://localhost:${PORT}`);
 });

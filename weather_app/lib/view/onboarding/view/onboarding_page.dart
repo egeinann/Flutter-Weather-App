@@ -26,11 +26,9 @@ class OnboardingPage extends StatelessWidget {
     ),
     Onboarding(
       title: "How is the weather today?",
-      widget: SimpleCityTextField(
+      widget: CustomTextField(
         controller: TextEditingController(),
-        onCitySelected: (city) {
-          print('Seçilen şehir: $city');
-        },
+        hintText: "Search",
       ),
       color: WeatherColors.cloudy,
     ),

@@ -20,7 +20,7 @@ class OnboardingBloc extends Cubit<int> {
           PageTransition(
             duration: const Duration(milliseconds: 800),
             type: PageTransitionType.rightToLeft,
-            child: const HomePage(),
+            child: HomePage(),
           ),
         );
       });

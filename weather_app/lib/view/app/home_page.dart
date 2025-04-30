@@ -1,49 +1,62 @@
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
-import 'package:weather_app/utils/lottie_files.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:weather_app/blocs/weatherBloc/weather_cubit.dart';
+import 'package:weather_app/blocs/weatherBloc/weather_state.dart';
+
+
 
 class HomePage extends StatelessWidget {
-  const HomePage({super.key});
-
   @override
   Widget build(BuildContext context) {
+    // Sayfa yüklendiği anda hava durumu verilerini almak için cubit'i tetikliyoruz
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<WeatherCubit>().fetchWeatherForCities();
+    });
+
     return Scaffold(
-      backgroundColor: Colors.blue,
       appBar: AppBar(
-        title: const Text('Weather App'),
+        title: Text('Hava Durumu'),
         centerTitle: true,
       ),
-      body: SingleChildScrollView(
-        // Kaydırılabilir yapı
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            _buildLottieItem('Bulutlu', LottieFiles.cloudy),
-            _buildLottieItem('Gece/Gündüz', LottieFiles.daynight),
-            _buildLottieItem('Şehir', LottieFiles.downtown),
-            _buildLottieItem('Sisli', LottieFiles.foggy),
-            _buildLottieItem('Yükleniyor', LottieFiles.loading),
-            _buildLottieItem('Parçalı Bulutlu', LottieFiles.partlycloudy),
-            _buildLottieItem('Karlı', LottieFiles.snowy),
-            _buildLottieItem('Güneşli', LottieFiles.sunny),
-            _buildLottieItem('Gök Gürültülü', LottieFiles.thunder),
+            BlocBuilder<WeatherCubit, WeatherState>(
+              builder: (context, state) {
+                if (state is WeatherLoading) {
+                  return Center(child: CircularProgressIndicator());
+                } else if (state is WeatherLoaded) {
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: state.weatherList.length,
+                    itemBuilder: (context, index) {
+                      var weather = state.weatherList[index];
+                      return Card(
+                        margin: EdgeInsets.symmetric(vertical: 10),
+                        child: ListTile(
+                          title: Text('${weather.cityName}, ${weather.country}'),
+                          subtitle: Text('${weather.temperature}°C, ${weather.description}'),
+                          trailing: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text('Rüzgar: ${weather.windSpeed} m/s'),
+                              Text('Nem: ${weather.humidity}%'),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                } else if (state is WeatherError) {
+                  return Text(state.message, style: TextStyle(color: Colors.red));
+                }
+                return SizedBox.shrink(); // İlk başta bir şey gösterme
+              },
+            ),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _buildLottieItem(String title, String path) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Column(
-        children: [
-          Text(title, style: const TextStyle(fontSize: 18)),
-          SizedBox(
-            height: 200, // Sabit yükseklik
-            child: Lottie.asset(path),
-          ),
-          const Divider(), // Ayırıcı çizgi
-        ],
       ),
     );
   }

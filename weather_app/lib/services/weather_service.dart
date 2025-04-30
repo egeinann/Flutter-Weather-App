@@ -1,15 +1,12 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-
 import '../models/weather_model.dart';
 
 class WeatherService {
-  final String _apiKey = '743039ab6e01c2de7ad71b56d95a428d';
-  final String _baseUrl = 'https://api.openweathermap.org/data/2.5/weather';
+  final String _baseUrl = 'http://10.0.2.2:3000/weather'; // Localhost (Android için 10.0.2.2)
 
   Future<WeatherModel> fetchWeather(String cityName) async {
-    final url =
-        Uri.parse('$_baseUrl?q=$cityName&appid=$_apiKey&units=metric&lang=tr');
+    final url = Uri.parse('$_baseUrl?city=$cityName');
 
     final response = await http.get(url);
 
