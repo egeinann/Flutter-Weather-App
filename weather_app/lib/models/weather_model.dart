@@ -18,12 +18,12 @@ class WeatherModel {
   // json verisini doğrudan bu modele çevirebiliriz
   factory WeatherModel.fromJson(Map<String, dynamic> json) {
     return WeatherModel(
-      cityName: json['name'],
-      country: json['sys']['country'],
-      temperature: (json['main']['temp'] as num).toDouble(),
-      humidity: json['main']['humidity'],
-      windSpeed: (json['wind']['speed'] as num).toDouble(),
-      description: json['weather'][0]['description'],
+      cityName: json['cityName'] ?? 'Bilinmiyor',
+      country: json['country'] ?? '??',
+      temperature: (json['temperature'] as num?)?.toDouble() ?? 0.0,
+      humidity: (json['humidity'] as int?) ?? 0,
+      windSpeed: (json['windSpeed'] as num?)?.toDouble() ?? 0.0,
+      description: json['description'] ?? 'Tanımsız',
     );
   }
 }

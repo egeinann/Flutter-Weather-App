@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:concentric_transition/concentric_transition.dart';
 import 'package:lottie/lottie.dart';
+import 'package:weather_app/blocs/citySearch_bloc.dart/city_bloc.dart';
+import 'package:weather_app/services/city_service.dart';
 import 'package:weather_app/utils/colors.dart';
 import 'package:weather_app/utils/icons.dart';
 import 'package:weather_app/utils/lottie_files.dart';
@@ -11,7 +13,11 @@ import 'package:weather_app/widgets/shadow_container.dart';
 import 'package:weather_app/widgets/textField.dart';
 
 class OnboardingPage extends StatelessWidget {
-  final List<Onboarding> pages = [
+  OnboardingPage({super.key});
+  final TextEditingController _controller = TextEditingController();
+  @override
+  Widget build(BuildContext context) {
+    final List<Onboarding> pages = [
     Onboarding(
       title: "Welcome",
       widget: customShadowContainer(
@@ -26,17 +32,18 @@ class OnboardingPage extends StatelessWidget {
     ),
     Onboarding(
       title: "How is the weather today?",
-      widget: CustomTextField(
-        controller: TextEditingController(),
-        hintText: "Search",
+        widget: BlocProvider(
+          create: (_) => CityBloc(CityService()),
+          child: CustomTextField(
+            controller: _controller,
+            onCitySelected: (city) {
+              // seçilen şehir ile işlem yapılacaksa
+            },
+          ),
       ),
       color: WeatherColors.cloudy,
     ),
-  ];
-  OnboardingPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
+    ];
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: BlocProvider(
