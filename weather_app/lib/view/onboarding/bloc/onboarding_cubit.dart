@@ -14,16 +14,19 @@ class OnboardingBloc extends Cubit<int> {
     emit(newIndex.clamp(0, 2)); // Index'i 0-2 arasında sınırla
 
     if (isLastPage && isAttemptingNextPage) {
-      Future.delayed(const Duration(milliseconds: 500), () {
+      Future.delayed(
+        const Duration(milliseconds: 300),
+        () {
         Navigator.pushReplacement(
           context,
           PageTransition(
-            duration: const Duration(milliseconds: 800),
+              duration: const Duration(milliseconds: 500),
             type: PageTransitionType.rightToLeft,
             child: HomePage(),
           ),
         );
-      });
+        },
+      );
     }
   }
 }

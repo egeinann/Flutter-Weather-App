@@ -6,7 +6,7 @@ import 'package:weather_app/blocs/citySearch_bloc.dart/city_bloc.dart';
 import 'package:weather_app/services/city_service.dart';
 import 'package:weather_app/utils/colors.dart';
 import 'package:weather_app/utils/icons.dart';
-import 'package:weather_app/utils/lottie_files.dart';
+import 'package:weather_app/utils/lottie_strings.dart';
 import 'package:weather_app/view/onboarding/bloc/onboarding_cubit.dart';
 import 'package:weather_app/view/onboarding/model/onboarding_model.dart';
 import 'package:weather_app/widgets/shadow_container.dart';
@@ -18,31 +18,34 @@ class OnboardingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<Onboarding> pages = [
-    Onboarding(
-      title: "Welcome",
-      widget: customShadowContainer(
-        child: Lottie.asset(LottieFiles.downtown, fit: BoxFit.cover),
+      Onboarding(
+        title: "Welcome",
+        widget: customShadowContainer(
+          child: Lottie.asset(LottieFiles.downtown, fit: BoxFit.cover),
+        ),
+        color: WeatherColors.cloudy,
       ),
-      color: WeatherColors.cloudy,
-    ),
-    Onboarding(
-      title: "Current weather information!",
-      widget: Lottie.asset(LottieFiles.thunder, fit: BoxFit.cover),
-      color: WeatherColors.stormy,
-    ),
-    Onboarding(
-      title: "How is the weather today?",
+      Onboarding(
+        title: "Current weather information!",
+        widget: Lottie.asset(LottieFiles.thunder, fit: BoxFit.cover),
+        color: WeatherColors.stormy,
+      ),
+      Onboarding(
+        title: "How is the weather today?",
         widget: BlocProvider(
           create: (_) => CityBloc(CityService()),
           child: CustomTextField(
+            onCitySelectedCallback: () {
+              print("tıklandı");
+            },
             controller: _controller,
             onCitySelected: (city) {
               // seçilen şehir ile işlem yapılacaksa
             },
           ),
+        ),
+        color: WeatherColors.cloudy,
       ),
-      color: WeatherColors.cloudy,
-    ),
     ];
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),

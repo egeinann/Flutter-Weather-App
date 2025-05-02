@@ -31,10 +31,12 @@ class MyApp extends StatelessWidget {
               create: (context) => CityBloc(_cityService),
             ),
           ],
-          child: MaterialApp(
-            home: OnboardingPage(), // OnboardingPage başlangıç ekranı
-            debugShowCheckedModeBanner: false,
-            theme: AppTheme.weatherTheme, // Uygulama temasını ekledik
+          child: SafeArea(
+            child: MaterialApp(
+              home: OnboardingPage(), // OnboardingPage başlangıç ekranı
+              debugShowCheckedModeBanner: false,
+              theme: AppTheme.weatherTheme, // Uygulama temasını ekledik
+            ),
           ),
         );
       },

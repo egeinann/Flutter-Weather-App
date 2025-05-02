@@ -10,38 +10,65 @@ class WeatherCubit extends Cubit<WeatherState> {
 
   WeatherCubit(this.weatherService, this.cityService) : super(WeatherInitial());
 
-  // Şehirler listesini alıp hava durumu verilerini al
-  void fetchWeatherForCities() async {
+  void fetchWeatherForPopularCities() async {
     emit(WeatherLoading());
 
     try {
-      List<String> cities = await cityService.fetchCityList();
+      List<String> popularCities = [
+        'New York',
+        'London',
+        'Paris',
+        'Tokyo',
+        'Istanbul',
+        'Moscow',
+        'Los Angeles',
+        'Beijing',
+        'Berlin',
+        'Rome',
+        'Dubai',
+        'Toronto',
+        'Chicago',
+        'Mumbai',
+        'Seoul',
+        'Barcelona',
+        'Amsterdam',
+        'Sydney',
+        'São Paulo',
+        'Bangkok',
+      ];
 
-      // İlk 10 şehirle sınırla (örnek olarak, daha sonra kaldırabilirsin)
-      cities = cities.take(10).toList();
-
-      // Aynı anda tüm istekleri gönder
       final results = await Future.wait(
-        cities.map((city) async {
+        popularCities.map((city) async {
           try {
             return await weatherService.fetchWeather(city);
           } catch (e) {
             print("Şehir atlandı: $city - $e");
-            return null; // Hatalı olanları null yapıyoruz
+            return null;
           }
         }),
       );
 
-      // Null olmayanları filtrele
       final weatherList = results.whereType<WeatherModel>().toList();
 
       if (weatherList.isNotEmpty) {
         emit(WeatherLoaded(weatherList));
       } else {
         emit(WeatherError("Hiçbir şehrin hava durumu alınamadı!"));
-    }
+      }
     } catch (e) {
-      emit(WeatherError("Şehirler alınamadı: $e"));
+      emit(WeatherError("Veriler alınamadı: $e"));
+    }
   }
-}
+
+  // Seçilen şehir için veri çekme fonksiyonu
+  void fetchWeatherForCity(String city) async {
+    emit(WeatherLoading());
+
+    try {
+      final weather = await weatherService.fetchWeather(city);
+      emit(WeatherLoaded([weather])); // Tek bir şehir verisi döndürülüyor
+    } catch (e) {
+      emit(WeatherError("Şehir için hava durumu alınamadı: $e"));
+    }
+  }
 }

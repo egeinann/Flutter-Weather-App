@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
@@ -12,12 +14,13 @@ class CustomTextField extends StatelessWidget {
   final TextEditingController controller;
   final String hintText;
   final Function(String)? onCitySelected;
-
+  final VoidCallback onCitySelectedCallback;
   const CustomTextField({
     super.key,
     required this.controller,
-    this.hintText = 'Şehir ara...',
+    this.hintText = 'Enter city...',
     this.onCitySelected,
+    required this.onCitySelectedCallback,
   });
 
   @override
@@ -52,6 +55,7 @@ class CustomTextField extends StatelessWidget {
                     AppIcons.search,
                     color: AppColors.icon,
                   ),
+                  suffixIcon: _buildSuffixIcon(context),
                   border: InputBorder.none,
                   contentPadding:
                       const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
@@ -84,6 +88,20 @@ class CustomTextField extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+
+  Widget _buildSuffixIcon(BuildContext context) {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(20),
+        onTap: onCitySelectedCallback,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Icon(AppIcons.right, color: AppColors.icon),
+        ),
+      ),
     );
   }
 }

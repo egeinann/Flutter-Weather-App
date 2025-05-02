@@ -1,34 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lottie/lottie.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:weather_app/blocs/weatherBloc/weather_cubit.dart';
 import 'package:weather_app/blocs/weatherBloc/weather_state.dart';
-import 'package:weather_app/widgets/textField.dart';
-
-
+import 'package:weather_app/utils/icons.dart';
+import 'package:weather_app/utils/lottie_strings.dart';
+import 'package:weather_app/view/app/search_page.dart';
+import 'package:weather_app/widgets/button.dart';
 
 class HomePage extends StatelessWidget {
   @override
-  final TextEditingController _controller = TextEditingController();
   Widget build(BuildContext context) {
     // Sayfa yüklendiği anda hava durumu verilerini almak için cubit'i tetikliyoruz
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<WeatherCubit>().fetchWeatherForCities();
+      context.read<WeatherCubit>().fetchWeatherForPopularCities();
     });
 
     return Scaffold(
-      appBar: AppBar(
-        title: CustomTextField(
-          controller: _controller,
-          hintText: "Search",
-        ),
-        centerTitle: true,
-      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: BlocBuilder<WeatherCubit, WeatherState>(
           builder: (context, state) {
             if (state is WeatherLoading) {
-              return Center(child: CircularProgressIndicator());
+              return Center(
+                child: Lottie.asset(
+                  LottieFiles.loading,
+                  width: 150,
+                  height: 150,
+                  fit: BoxFit.contain,
+                ),
+              );
             } else if (state is WeatherLoaded) {
               return ListView.builder(
                 shrinkWrap: true,
@@ -59,6 +61,22 @@ class HomePage extends StatelessWidget {
             }
             return SizedBox.shrink(); // İlk başta bir şey gösterme
           },
+        ),
+      ),
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(right: 5, bottom: 20),
+        child: customButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              PageTransition(
+                duration: const Duration(milliseconds: 200),
+                type: PageTransitionType.bottomToTop,
+                child: SearchPage(),
+              ),
+            );
+          },
+          child: Icon(AppIcons.search),
         ),
       ),
     );
