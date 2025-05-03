@@ -6,6 +6,7 @@ import 'package:weather_app/blocs/weatherBloc/weather_cubit.dart';
 import 'package:weather_app/blocs/weatherBloc/weather_state.dart';
 import 'package:weather_app/utils/icons.dart';
 import 'package:weather_app/utils/lottie_strings.dart';
+import 'package:weather_app/view/app/detail_page.dart';
 import 'package:weather_app/view/app/search_page.dart';
 import 'package:weather_app/widgets/button.dart';
 
@@ -52,6 +53,18 @@ class HomePage extends StatelessWidget {
                           ],
                         ),
                       ),
+                      onTap: () {
+                        Navigator.pushReplacement(
+                          context,
+                          PageTransition(
+                            duration: const Duration(milliseconds: 200),
+                            type: PageTransitionType.rightToLeft,
+                            child: DetailPage(
+                              weather: weather,
+                            ),
+                          ),
+                        );
+                      },
                     ),
                   );
                 },
