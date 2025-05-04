@@ -22,6 +22,9 @@ class DetailPage extends StatelessWidget {
             Text('Açıklama: ${weather.description}'),
             Text('Nem: ${weather.humidity}%'),
             Text('Rüzgar: ${weather.windSpeed} m/s'),
+            weather.backgroundImage.isNotEmpty
+                ? Image.asset(weather.backgroundImage)
+                : Container(),
           ],
         ),
       ),

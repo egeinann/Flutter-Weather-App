@@ -54,7 +54,7 @@ class HomePage extends StatelessWidget {
                         ),
                       ),
                       onTap: () {
-                        Navigator.pushReplacement(
+                        Navigator.push(
                           context,
                           PageTransition(
                             duration: const Duration(milliseconds: 200),
