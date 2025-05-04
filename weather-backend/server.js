@@ -12,6 +12,9 @@ const API_KEY = '743039ab6e01c2de7ad71b56d95a428d';
 // CORS ayarlarını ekleyelim
 app.use(cors());
 
+// ✅ Assets klasörünü public hale getir
+app.use('/assets', express.static(path.join(__dirname, 'assets')));
+
 // Şehirler listesini city.list.json dosyasından okuma
 app.get('/cities', (req, res) => {
   const cityListPath = path.join(__dirname, 'city.list.json'); // Dosya yolunu düzeltelim
@@ -44,7 +47,7 @@ app.get('/weather', async (req, res) => {
         q: city,
         appid: API_KEY,
         units: 'metric',
-        lang: 'tr',
+        lang: 'en',
       },
     });
 

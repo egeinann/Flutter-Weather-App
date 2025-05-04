@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:lottie/lottie.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:weather_app/blocs/weatherBloc/weather_cubit.dart';
 import 'package:weather_app/blocs/citySearch_bloc.dart/city_bloc.dart';
@@ -8,7 +7,6 @@ import 'package:weather_app/blocs/citySearch_bloc.dart/city_event.dart';
 import 'package:weather_app/blocs/citySearch_bloc.dart/city_state.dart';
 import 'package:weather_app/blocs/weatherBloc/weather_state.dart';
 import 'package:weather_app/utils/image_strings.dart';
-import 'package:weather_app/utils/lottie_strings.dart';
 import 'package:weather_app/widgets/blur_container.dart';
 import 'package:weather_app/widgets/textField.dart';
 
@@ -60,7 +58,7 @@ class SearchPage extends StatelessWidget {
               child: BlocBuilder<WeatherCubit, WeatherState>(
                 builder: (context, weatherState) {
                   if (weatherState is WeatherLoading) {
-                    return Lottie.asset(LottieFiles.loading);
+                    return CircularProgressIndicator();
                   } else if (weatherState is WeatherLoaded) {
                     final weather = weatherState.weatherList.first;
                     return Column(
@@ -129,7 +127,7 @@ class SearchPage extends StatelessWidget {
   // *** BACKGROUND IMAGE ***
   Positioned backgroundImage() {
     return Positioned.fill(
-      child: Image.asset(
+      child: Image.network(
         BackgroundImages.sunnyBackground,
         fit: BoxFit.cover,
       ),

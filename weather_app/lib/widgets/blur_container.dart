@@ -7,6 +7,8 @@ Widget customBlurContainer({
   required Widget child,
   double borderRadius = 20,
   Color? backgroundColor,
+  double? widht,
+  double? height,
 }) {
   return ClipRRect(
     borderRadius: BorderRadius.circular(borderRadius),
@@ -14,6 +16,8 @@ Widget customBlurContainer({
       children: [
         Positioned.fill(
           child: Container(
+            width: widht,
+            height: height,
             color: backgroundColor?.withOpacity(0.1) ??
                 AppColors.background.withOpacity(0.4),
             child: BackdropFilter(

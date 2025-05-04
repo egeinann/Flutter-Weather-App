@@ -6,11 +6,15 @@ Widget customShadowContainer({
   required Widget child,
   double borderRadius = 20,
   Color? backgroundColor,
+  double? widht,
+  double? height,
 })  {
   return Container(
+    width: widht,
+    height: height,
     decoration: BoxDecoration(
       color: backgroundColor ??
-                AppColors.background,
+                AppColors.container,
       borderRadius: BorderRadius.circular(borderRadius),
       boxShadow: [
         BoxShadow(

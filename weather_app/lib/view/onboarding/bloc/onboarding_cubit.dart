@@ -8,10 +8,8 @@ class OnboardingBloc extends Cubit<int> {
 
   void handlePageChange(int newIndex, BuildContext context) {
     final isLastPage = state == 2;
-    final isAttemptingNextPage =
-        newIndex == 3; // ConcentricPageView'den gelen geçersiz index
-
-    emit(newIndex.clamp(0, 2)); // Index'i 0-2 arasında sınırla
+    final isAttemptingNextPage = newIndex == 3;
+    emit(newIndex.clamp(0, 2)); // Index 0-2 arasında sınırla
 
     if (isLastPage && isAttemptingNextPage) {
       Future.delayed(

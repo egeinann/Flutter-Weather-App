@@ -1,30 +1,50 @@
 class BackgroundImages {
-  static const String cloudyBackground =
-      'assets/images/backgrounds/cloudyBackground.jpg';
-  static const String rainyBackground =
-      'assets/images/backgrounds/rainyBackground.jpg';
-  static const String snowyBackground =
-      'assets/images/backgrounds/snowyBackground.jpg';
-  static const String sunnyBackground =
-      'assets/images/backgrounds/sunnyBackground.jpg';
-  static const String thunderBackground =
-      'assets/images/backgrounds/thunderBackground.jpg';
-  static const String tornadoBackground =
-      'assets/images/backgrounds/tornadoBackground.jpg';
+  static const String _baseUrl =
+      'http://10.0.2.2:3000/assets/images/backgrounds/';
+
+  static const String cloudyBackground = '${_baseUrl}cloudyBackground.jpg';
+  static const String rainyBackground = '${_baseUrl}rainyBackground.jpg';
+  static const String snowyBackground = '${_baseUrl}snowyBackground.jpg';
+  static const String sunnyBackground = '${_baseUrl}sunnyBackground.jpg';
+  static const String thunderBackground = '${_baseUrl}thunderBackground.jpg';
+  static const String tornadoBackground = '${_baseUrl}tornadoBackground.jpg';
   static const String sandstormBackground =
-      'assets/images/backgrounds/sandstormBackground.jpg';
-  static const String drizzleBackground =
-      'assets/images/backgrounds/drizzleBackground.jpg';
+      '${_baseUrl}sandstormBackground.jpg';
+  static const String drizzleBackground = '${_baseUrl}drizzleBackground.jpg';
   static const String brokencloudsBackground =
-      'assets/images/backgrounds/brokencloudsBackground.jpg';
+      '${_baseUrl}brokencloudsBackground.jpg';
 }
 
 class IconImages {
-  static const String windIcon = 'assets/images/icons/wind.png';
-  static const String sunnyIcon = 'assets/images/icons/sunny.png';
-  static const String cloudyIcon = 'assets/images/icons/cloudy.png';
-  static const String rainyIcon = 'assets/images/icons/rainy.png';
-  static const String thunderIcon = 'assets/images/icons/thunder.png';
-  static const String snowyIcon = 'assets/images/icons/snowy.png';
-  static const String sunnyCloudyIcon = 'assets/icons/images/sunnyCloudy.png';
+  static const String _baseUrl = 'http://10.0.2.2:3000/assets/images/icons/';
+  static const String onboardingImage = '${_baseUrl}onboardingImage.png';
+  static const String windIcon = '${_baseUrl}wind.png';
+  static const String sunnyIcon = '${_baseUrl}sunny.png';
+  static const String cloudyIcon = '${_baseUrl}cloudy.png';
+  static const String rainyIcon = '${_baseUrl}rainy.png';
+  static const String thunderIcon = '${_baseUrl}thunder.png';
+  static const String snowyIcon = '${_baseUrl}snowy.png';
+  static const String sunnyCloudyIcon = '${_baseUrl}sunnyCloudy.png';
+}
+
+class CityBackgrounds {
+  static const String _baseUrl = 'http://10.0.2.2:3000/assets/cities/';
+  static const String amsterdam = '${_baseUrl}amsterdam.jpg';
+  static const String barcelona = '${_baseUrl}barcelona.jpg';
+  static const String beijing = '${_baseUrl}beijing.jpg';
+  static const String berlin = '${_baseUrl}berlin.jpg';
+  static const String chicago = '${_baseUrl}chicago.jpg';
+  static const String dubai = '${_baseUrl}dubai.jpg';
+  static const String istanbul = '${_baseUrl}istanbul.jpg';
+  static const String london = '${_baseUrl}london.jpg';
+  static const String losangeles = '${_baseUrl}losangeles.jpg';
+  static const String moscow = '${_baseUrl}moscow.jpg';
+  static const String newyork = '${_baseUrl}newyork.jpg';
+  static const String paris = '${_baseUrl}paris.jpg';
+  static const String rome = '${_baseUrl}rome.jpg';
+  static const String saopaulo = '${_baseUrl}saopaulo.jpg';
+  static const String seoul = '${_baseUrl}seoul.jpg';
+  static const String sydney = '${_baseUrl}sydney.jpg';
+  static const String tokyo = '${_baseUrl}tokyo.jpg';
+  static const String toronto = '${_baseUrl}toronto.jpg';
 }

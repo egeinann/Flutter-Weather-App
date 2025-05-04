@@ -10,13 +10,13 @@ class WeatherColors{
 }
 
 class AppColors {
-  static const Color background = Color(0xFFEFEEEA);
-  static const Color button = Color(0xFF27548A);
-  static const Color container = Color.fromARGB(255, 206, 205, 201);
-  static const Color shadow = Color.fromARGB(255, 92, 92, 90);
+  static const Color background = Color(0xFFDBDFEA);
+  static const Color button = Color(0xFF526D82);
+  static const Color container = Color(0xFF9BA4B5);
+  static const Color shadow = Color(0xFF212A3E);
   static const Color textDark = Color(0xFF222831);
   static const Color textLight = Color(0xFFF2F9FF);
-  static const Color icon = Color.fromARGB(255, 56, 56, 56);
+  static const Color icon = Color(0xFF27374D);
   static const Color bigTextDark = Color(0xFF222831);
   static const Color bigTextLight = Color(0xFFF2F9FF);
 }

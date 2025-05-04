@@ -43,6 +43,7 @@ dependencies:
   flutter_bloc: ^9.1.0
   concentric_transition: ^1.0.3
   flutter_typeahead: ^5.2.0
+  smooth_page_indicator: ^1.2.1
 
 dev_dependencies:
   flutter_test:
@@ -67,10 +68,10 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  assets:
-    - assets/lotties/
-    - assets/images/backgrounds/
-    - assets/images/icons/
+  # assets:
+  #   # - assets/lotties/
+  #   # - assets/images/backgrounds/
+  #   # - assets/images/icons/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

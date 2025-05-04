@@ -1,11 +1,13 @@
 class LottieFiles {
-  static const String cloudy = 'assets/lotties/cloudy.json';
-  static const String daynight = 'assets/lotties/daynight.json';
-  static const String downtown = 'assets/lotties/downtown.json';
-  static const String foggy = 'assets/lotties/foggy.json';
-  static const String loading = 'assets/lotties/loading.json';
-  static const String partlycloudy = 'assets/lotties/partlycloudy.json';
-  static const String snowy = 'assets/lotties/snowy.json';
-  static const String sunny = 'assets/lotties/sunny.json';
-  static const String thunder = 'assets/lotties/thunder.json';
+  static const String _baseUrl = 'http://10.0.2.2:3000/assets/lotties/';
+
+  static const String cloudy = '${_baseUrl}cloudy.json';
+  static const String daynight = '${_baseUrl}daynight.json';
+  static const String downtown = '${_baseUrl}downtown.json';
+  static const String foggy = '${_baseUrl}foggy.json';
+  static const String loading = '${_baseUrl}loading.json';
+  static const String partlycloudy = '${_baseUrl}partlycloudy.json';
+  static const String snowy = '${_baseUrl}snowy.json';
+  static const String sunny = '${_baseUrl}sunny.json';
+  static const String thunder = '${_baseUrl}thunder.json';
 }

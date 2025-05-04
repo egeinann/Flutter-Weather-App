@@ -22,46 +22,107 @@ class WeatherModel {
 
   bool _has(String keyword) => _lowerDesc.contains(keyword);
 
-  /// 🌤 Icon asset
   String get iconAsset {
-    if (_has('thunder') || _has('storm')) return IconImages.thunderIcon;
-    if (_has('snow')) return IconImages.snowyIcon;
-    if (_has('rain') || _has('drizzle')) return IconImages.rainyIcon;
-    if (_has('clear')) return IconImages.sunnyIcon;
-    if (_has('clouds') || _has('cloud')) {
-      if (_has('broken') || _has('scattered') || _has('few')) {
-        return IconImages.sunnyCloudyIcon;
-      }
+    if (_has('thunderstorm') ||
+        _has('stormy') ||
+        _has('blizzard') ||
+        _has('freezing rain')) {
+      return IconImages.thunderIcon;
+    }
+    if (_has('snowy') ||
+        _has('snow') ||
+        _has('sleet') ||
+        _has('hail') ||
+        _has('blizzard')) {
+      return IconImages.snowyIcon;
+    }
+    if (_has('rainy') ||
+        _has('rain') ||
+        _has('drizzle') ||
+        _has('freezing rain')) {
+      return IconImages.rainyIcon;
+    }
+    if (_has('partly cloudy') || _has('broken clouds') || _has('few clouds')) {
+      return IconImages.sunnyCloudyIcon;
+    }
+    if (_has('cloudy') || _has('overcast') || _has('clouds')) {
       return IconImages.cloudyIcon;
+    }
+    if (_has('clear sky') || _has('clear') || _has('sunny')) {
+      return IconImages.sunnyIcon;
+    }
+    if (_has('sandstorm') || _has('tornado') || _has('windy')) {
+      return IconImages.windIcon;
     }
     return IconImages.windIcon;
   }
 
-  /// 🌄 Background image
   String get backgroundImage {
-    if (_has('thunder') || _has('storm')) return BackgroundImages.thunderBackground;
-    if (_has('snow')) return BackgroundImages.snowyBackground;
-    if (_has('rain') || _has('drizzle')) return BackgroundImages.rainyBackground;
-    if (_has('clear')) return BackgroundImages.sunnyBackground;
-    if (_has('clouds') || _has('cloud')) {
-      if (_has('broken') || _has('scattered') || _has('few')) {
-        return BackgroundImages.sunnyBackground;
-      }
+    if (_has('thunderstorm') ||
+        _has('stormy') ||
+        _has('blizzard') ||
+        _has('freezing rain')) {
+      return BackgroundImages.thunderBackground;
+    }
+    if (_has('snowy') ||
+        _has('snow') ||
+        _has('sleet') ||
+        _has('hail') ||
+        _has('blizzard')) {
+      return BackgroundImages.snowyBackground;
+    }
+    if (_has('rainy') ||
+        _has('rain') ||
+        _has('drizzle') ||
+        _has('freezing rain')) {
+      return BackgroundImages.rainyBackground;
+    }
+    if (_has('sandstorm')) return BackgroundImages.sandstormBackground;
+    if (_has('tornado')) return BackgroundImages.tornadoBackground;
+    if (_has('broken clouds') || _has('few clouds'))
+      return BackgroundImages.brokencloudsBackground;
+    if (_has('clear sky') ||
+        _has('clear') ||
+        _has('sunny') ||
+        _has('partly cloudy')) {
+      return BackgroundImages.sunnyBackground;
+    }
+    if (_has('cloudy') || _has('overcast') || _has('clouds')) {
       return BackgroundImages.cloudyBackground;
     }
     return BackgroundImages.sunnyBackground;
   }
 
-  /// 🔁 Lottie animation
   String get lottieAsset {
-    if (_has('thunder') || _has('storm')) return LottieFiles.thunder;
-    if (_has('snow')) return LottieFiles.snowy;
-    if (_has('rain') || _has('drizzle')) return LottieFiles.foggy;
-    if (_has('clear')) return LottieFiles.sunny;
-    if (_has('clouds') || _has('cloud')) {
-      if (_has('broken') || _has('scattered') || _has('few')) {
-        return LottieFiles.partlycloudy;
-      }
+    if (_has('thunderstorm') ||
+        _has('stormy') ||
+        _has('blizzard') ||
+        _has('freezing rain')) {
+      return LottieFiles.thunder;
+    }
+    if (_has('snowy') ||
+        _has('snow') ||
+        _has('sleet') ||
+        _has('hail') ||
+        _has('blizzard')) {
+      return LottieFiles.snowy;
+    }
+    if (_has('rainy') ||
+        _has('rain') ||
+        _has('drizzle') ||
+        _has('freezing rain')) {
+      return LottieFiles.foggy;
+    }
+    if (_has('partly cloudy') || _has('broken clouds') || _has('few clouds')) {
+      return LottieFiles.partlycloudy;
+    }
+    if (_has('cloudy') || _has('overcast') || _has('clouds')) {
+      return LottieFiles.cloudy;
+    }
+    if (_has('clear sky') || _has('clear') || _has('sunny')) {
+      return LottieFiles.sunny;
+    }
+    if (_has('foggy') || _has('haze')) {
       return LottieFiles.cloudy;
     }
     return LottieFiles.daynight;
@@ -77,4 +138,5 @@ class WeatherModel {
       description: json['description'] ?? 'undefined',
     );
   }
+  
 }

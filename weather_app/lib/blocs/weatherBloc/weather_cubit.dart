@@ -3,6 +3,7 @@ import 'package:weather_app/blocs/weatherBloc/weather_state.dart';
 import 'package:weather_app/models/weather_model.dart';
 import 'package:weather_app/services/weather_service.dart';
 import 'package:weather_app/services/city_service.dart';
+import 'package:weather_app/utils/image_strings.dart';
 
 class WeatherCubit extends Cubit<WeatherState> {
   final WeatherService weatherService;
@@ -28,13 +29,11 @@ class WeatherCubit extends Cubit<WeatherState> {
         'Dubai',
         'Toronto',
         'Chicago',
-        'Mumbai',
         'Seoul',
         'Barcelona',
         'Amsterdam',
         'Sydney',
         'São Paulo',
-        'Bangkok',
       ];
 
       final results = await Future.wait(
@@ -71,4 +70,49 @@ class WeatherCubit extends Cubit<WeatherState> {
       emit(WeatherError("Şehir için hava durumu alınamadı: $e"));
     }
   }
+
+  String getCityBackgroundUrl(String cityName) {
+    final lower = cityName.toLowerCase().replaceAll(' ', '');
+    switch (lower) {
+      case 'amsterdam':
+        return CityBackgrounds.amsterdam;
+      case 'barcelona':
+        return CityBackgrounds.barcelona;
+      case 'beijing':
+        return CityBackgrounds.beijing;
+      case 'berlin':
+        return CityBackgrounds.berlin;
+      case 'chicago':
+        return CityBackgrounds.chicago;
+      case 'dubai':
+        return CityBackgrounds.dubai;
+      case 'istanbul':
+        return CityBackgrounds.istanbul;
+      case 'london':
+        return CityBackgrounds.london;
+      case 'losangeles':
+        return CityBackgrounds.losangeles;
+      case 'moscow':
+        return CityBackgrounds.moscow;
+      case 'newyork':
+        return CityBackgrounds.newyork;
+      case 'paris':
+        return CityBackgrounds.paris;
+      case 'rome':
+        return CityBackgrounds.rome;
+      case 'saopaulo':
+        return CityBackgrounds.saopaulo;
+      case 'seoul':
+        return CityBackgrounds.seoul;
+      case 'sydney':
+        return CityBackgrounds.sydney;
+      case 'tokyo':
+        return CityBackgrounds.tokyo;
+      case 'toronto':
+        return CityBackgrounds.toronto;
+      default:
+        return 'https://via.placeholder.com/300x200?text=No+Image'; // fallback
+    }
+  }
+
 }

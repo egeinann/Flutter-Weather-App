@@ -49,6 +49,10 @@ class CustomTextField extends StatelessWidget {
                 cursorColor: AppColors.shadow,
                 decoration: InputDecoration(
                   hintText: hintText,
+                  hintStyle:
+                      Theme.of(context).textTheme.headlineMedium?.copyWith(
+                            color: AppColors.icon,
+                          ),
                   prefixIcon: const Icon(
                     AppIcons.search,
                     color: AppColors.icon,
@@ -83,7 +87,9 @@ class CustomTextField extends StatelessWidget {
               if (onCitySelected != null) onCitySelected!(suggestion);
               FocusScope.of(context).unfocus();
             },
+            
           ),
+    
         );
       },
     );

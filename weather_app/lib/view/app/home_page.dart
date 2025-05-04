@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:lottie/lottie.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:weather_app/blocs/weatherBloc/weather_cubit.dart';
 import 'package:weather_app/blocs/weatherBloc/weather_state.dart';
 import 'package:weather_app/utils/icons.dart';
-import 'package:weather_app/utils/lottie_strings.dart';
 import 'package:weather_app/view/app/detail_page.dart';
 import 'package:weather_app/view/app/search_page.dart';
 import 'package:weather_app/widgets/button.dart';
@@ -25,12 +23,7 @@ class HomePage extends StatelessWidget {
           builder: (context, state) {
             if (state is WeatherLoading) {
               return Center(
-                child: Lottie.asset(
-                  LottieFiles.loading,
-                  width: 150,
-                  height: 150,
-                  fit: BoxFit.contain,
-                ),
+                child: CircularProgressIndicator(),
               );
             } else if (state is WeatherLoaded) {
               return ListView.builder(
@@ -38,20 +31,43 @@ class HomePage extends StatelessWidget {
                 itemCount: state.weatherList.length,
                 itemBuilder: (context, index) {
                   var weather = state.weatherList[index];
-                  return Card(
+                  return Container(
+                    height: 150,
                     margin: EdgeInsets.symmetric(vertical: 10),
-                    child: ListTile(
-                      title: Text('${weather.cityName}, ${weather.country}'),
-                      subtitle: Text(
-                          '${weather.temperature}°C, ${weather.description}'),
-                      trailing: SingleChildScrollView(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text('Rüzgar: ${weather.windSpeed} m/s'),
-                            Text('Nem: ${weather.humidity}%'),
-                          ],
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      image: DecorationImage(
+                        image: NetworkImage(
+                          context
+                              .read<WeatherCubit>()
+                              .getCityBackgroundUrl(weather.cityName),
                         ),
+                        fit: BoxFit.cover,
+                        colorFilter: ColorFilter.mode(
+                            Colors.black.withOpacity(0.4), BlendMode.darken),
+                      ),
+                    ),
+                    child: ListTile(
+                      contentPadding: EdgeInsets.all(16),
+                      title: Text(
+                        '${weather.cityName}, ${weather.country}',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18),
+                      ),
+                      subtitle: Text(
+                        '${weather.temperature}°C, ${weather.description}',
+                        style: TextStyle(color: Colors.white70),
+                      ),
+                      trailing: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text('Rüzgar: ${weather.windSpeed} m/s',
+                              style: TextStyle(color: Colors.white)),
+                          Text('Nem: ${weather.humidity}%',
+                              style: TextStyle(color: Colors.white)),
+                        ],
                       ),
                       onTap: () {
                         Navigator.push(
@@ -59,9 +75,7 @@ class HomePage extends StatelessWidget {
                           PageTransition(
                             duration: const Duration(milliseconds: 200),
                             type: PageTransitionType.rightToLeft,
-                            child: DetailPage(
-                              weather: weather,
-                            ),
+                            child: DetailPage(weather: weather),
                           ),
                         );
                       },

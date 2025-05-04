@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:weather_app/utils/colors.dart';
 
 Widget customButton({
   required VoidCallback onPressed,
   required Widget child,
-  Color backgroundColor = Colors.blue,
-  Color textColor = Colors.white,
+  Color backgroundColor = AppColors.button,
+  Color textColor = AppColors.textLight,
 }) {
   return ElevatedButton(
     onPressed: onPressed,
@@ -23,8 +24,8 @@ Widget customIconButton({
   required VoidCallback onPressed,
   required IconData icon,
   double size = 25,
-  Color backgroundColor = Colors.blue,
-  Color textColor = Colors.white,
+  Color backgroundColor = AppColors.button,
+  Color textColor = AppColors.icon,
 }) {
   return IconButton(
     onPressed: onPressed,
