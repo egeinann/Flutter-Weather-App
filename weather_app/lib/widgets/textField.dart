@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import 'package:weather_app/blocs/citySearch_bloc.dart/city_bloc.dart';
-import 'package:weather_app/blocs/citySearch_bloc.dart/city_event.dart';
-import 'package:weather_app/blocs/citySearch_bloc.dart/city_state.dart';
+import 'package:weather_app/blocs/citySearch_bloc/city_bloc.dart';
+import 'package:weather_app/blocs/citySearch_bloc/city_event.dart';
+import 'package:weather_app/blocs/citySearch_bloc/city_state.dart';
 import 'package:weather_app/utils/colors.dart';
 import 'package:weather_app/utils/icons.dart';
 

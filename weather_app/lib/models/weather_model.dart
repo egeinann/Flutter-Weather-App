@@ -4,7 +4,7 @@ import 'package:weather_app/utils/lottie_strings.dart';
 class WeatherModel {
   final String cityName;
   final String country;
-  final double temperature;
+  final int temperature; // double -> int
   final int humidity;
   final double windSpeed;
   final String description;
@@ -132,11 +132,10 @@ class WeatherModel {
     return WeatherModel(
       cityName: json['cityName'] ?? 'Unknown',
       country: json['country'] ?? '--',
-      temperature: (json['temperature'] as num?)?.toDouble() ?? 0.0,
+      temperature: (json['temperature'] as num?)?.round() ?? 0, // yuvarlama
       humidity: (json['humidity'] as int?) ?? 0,
       windSpeed: (json['windSpeed'] as num?)?.toDouble() ?? 0.0,
       description: json['description'] ?? 'undefined',
     );
   }
-  
 }

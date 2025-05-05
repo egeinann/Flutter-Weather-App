@@ -54,7 +54,7 @@ app.get('/weather', async (req, res) => {
     const weatherData = {
       cityName: response.data.name,
       country: response.data.sys.country,
-      temperature: response.data.main.temp,
+      temperature: Math.round(response.data.main.temp), // 🌡️ int değer
       humidity: response.data.main.humidity,
       windSpeed: response.data.wind.speed,
       description: response.data.weather[0].description,

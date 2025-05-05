@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import 'package:weather_app/blocs/citySearch_bloc.dart/city_bloc.dart';
+import 'package:weather_app/blocs/citySearch_bloc/city_bloc.dart';
+import 'package:weather_app/blocs/tabBar_bloc/tab_bloc.dart';
 import 'package:weather_app/blocs/weatherBloc/weather_cubit.dart';
 import 'package:weather_app/services/city_service.dart';
 import 'package:weather_app/services/weather_service.dart';
@@ -29,6 +30,9 @@ class MyApp extends StatelessWidget {
             ),
             BlocProvider<CityBloc>(
               create: (context) => CityBloc(_cityService),
+            ),
+            BlocProvider<TabCubit>(
+              create: (context) => TabCubit(),
             ),
           ],
           child: SafeArea(

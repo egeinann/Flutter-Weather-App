@@ -72,7 +72,16 @@ class WeatherCubit extends Cubit<WeatherState> {
   }
 
   String getCityBackgroundUrl(String cityName) {
-    final lower = cityName.toLowerCase().replaceAll(' ', '');
+    // Küçük harfe çevir, boşlukları kaldır, özel karakterleri temizle
+    final lower = cityName
+        .toLowerCase()
+        .replaceAll(' ', '')
+        .replaceAll('ã', 'a') // São Paulo → saopaulo
+        .replaceAll('á', 'a')
+        .replaceAll('é', 'e')
+        .replaceAll('ç', 'c')
+        .replaceAll('ü', 'u');
+
     switch (lower) {
       case 'amsterdam':
         return CityBackgrounds.amsterdam;
@@ -111,8 +120,9 @@ class WeatherCubit extends Cubit<WeatherState> {
       case 'toronto':
         return CityBackgrounds.toronto;
       default:
-        return 'https://via.placeholder.com/300x200?text=No+Image'; // fallback
+        return CityBackgrounds.istanbul; // fallback görsel
     }
   }
+
 
 }

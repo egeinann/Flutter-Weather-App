@@ -11,7 +11,7 @@ import 'package:weather_app/widgets/button.dart';
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // Sayfa yüklendiği anda hava durumu verilerini almak için cubit'i tetikliyoruz
+    // Sayfa yüklendiği anda hava durumu verilerini almak için cubiti tetikliyoruz
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<WeatherCubit>().fetchWeatherForPopularCities();
     });
@@ -19,75 +19,20 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: BlocBuilder<WeatherCubit, WeatherState>(
-          builder: (context, state) {
-            if (state is WeatherLoading) {
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            } else if (state is WeatherLoaded) {
-              return ListView.builder(
-                shrinkWrap: true,
-                itemCount: state.weatherList.length,
-                itemBuilder: (context, index) {
-                  var weather = state.weatherList[index];
-                  return Container(
-                    height: 150,
-                    margin: EdgeInsets.symmetric(vertical: 10),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      image: DecorationImage(
-                        image: NetworkImage(
-                          context
-                              .read<WeatherCubit>()
-                              .getCityBackgroundUrl(weather.cityName),
-                        ),
-                        fit: BoxFit.cover,
-                        colorFilter: ColorFilter.mode(
-                            Colors.black.withOpacity(0.4), BlendMode.darken),
-                      ),
-                    ),
-                    child: ListTile(
-                      contentPadding: EdgeInsets.all(16),
-                      title: Text(
-                        '${weather.cityName}, ${weather.country}',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18),
-                      ),
-                      subtitle: Text(
-                        '${weather.temperature}°C, ${weather.description}',
-                        style: TextStyle(color: Colors.white70),
-                      ),
-                      trailing: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text('Rüzgar: ${weather.windSpeed} m/s',
-                              style: TextStyle(color: Colors.white)),
-                          Text('Nem: ${weather.humidity}%',
-                              style: TextStyle(color: Colors.white)),
-                        ],
-                      ),
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          PageTransition(
-                            duration: const Duration(milliseconds: 200),
-                            type: PageTransitionType.rightToLeft,
-                            child: DetailPage(weather: weather),
-                          ),
-                        );
-                      },
-                    ),
-                  );
-                },
-              );
-            } else if (state is WeatherError) {
-              return Text(state.message, style: TextStyle(color: Colors.red));
-            }
-            return SizedBox.shrink(); // İlk başta bir şey gösterme
-          },
+        child: Column(
+          children: [
+            Expanded(
+              child: Container(
+                color: Colors.red,
+                child: buildPopularCities(),
+              ),
+            ),
+            Expanded(
+              child: Container(
+                color: Colors.green,
+              ),
+            ),
+          ],
         ),
       ),
       floatingActionButton: Padding(
@@ -106,6 +51,79 @@ class HomePage extends StatelessWidget {
           child: Icon(AppIcons.search),
         ),
       ),
+    );
+  }
+
+  // *** BUILD POPULAR CITIES ***
+  BlocBuilder<WeatherCubit, WeatherState> buildPopularCities() {
+    return BlocBuilder<WeatherCubit, WeatherState>(
+      builder: (context, state) {
+        if (state is WeatherLoading) {
+          return Center(child: CircularProgressIndicator());
+        } else if (state is WeatherLoaded) {
+          return SingleChildScrollView(
+            child: Column(
+              children: state.weatherList.map((weather) {
+                final backgroundUrl = context
+                    .read<WeatherCubit>()
+                    .getCityBackgroundUrl(weather.cityName);
+
+                return Container(
+                  height: 150,
+                  margin: EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    image: DecorationImage(
+                      image: NetworkImage(backgroundUrl),
+                      fit: BoxFit.cover,
+                      colorFilter: ColorFilter.mode(
+                          Colors.black.withOpacity(0.4), BlendMode.darken),
+                    ),
+                  ),
+                  child: ListTile(
+                    contentPadding: EdgeInsets.all(16),
+                    title: Text(
+                      '${weather.cityName}, ${weather.country}',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18),
+                    ),
+                    subtitle: Text(
+                      '${weather.temperature}°C, ${weather.description}',
+                      style: TextStyle(color: Colors.white70),
+                    ),
+                    trailing: SingleChildScrollView(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text('Wind speed: ${weather.windSpeed} m/s',
+                              style: TextStyle(color: Colors.white)),
+                          Text('humidity: ${weather.humidity}%',
+                              style: TextStyle(color: Colors.white)),
+                        ],
+                      ),
+                    ),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        PageTransition(
+                          duration: const Duration(milliseconds: 200),
+                          type: PageTransitionType.rightToLeft,
+                          child: DetailPage(weather: weather),
+                        ),
+                      );
+                    },
+                  ),
+                );
+              }).toList(),
+            ),
+          );
+        } else if (state is WeatherError) {
+          return Text(state.message, style: TextStyle(color: Colors.red));
+        }
+        return SizedBox.shrink();
+      },
     );
   }
 }

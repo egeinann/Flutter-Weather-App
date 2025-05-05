@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:weather_app/blocs/weatherBloc/weather_cubit.dart';
-import 'package:weather_app/blocs/citySearch_bloc.dart/city_bloc.dart';
-import 'package:weather_app/blocs/citySearch_bloc.dart/city_event.dart';
-import 'package:weather_app/blocs/citySearch_bloc.dart/city_state.dart';
+import 'package:weather_app/blocs/citySearch_bloc/city_bloc.dart';
+import 'package:weather_app/blocs/citySearch_bloc/city_event.dart';
+import 'package:weather_app/blocs/citySearch_bloc/city_state.dart';
 import 'package:weather_app/blocs/weatherBloc/weather_state.dart';
 import 'package:weather_app/utils/image_strings.dart';
 import 'package:weather_app/widgets/blur_container.dart';
@@ -46,7 +46,7 @@ class SearchPage extends StatelessWidget {
         alignment: Alignment.bottomCenter,
         child: Container(
           width: 90.w,
-          height: 70.h,
+          height: 60.h,
           decoration: const BoxDecoration(
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(20),
@@ -64,24 +64,24 @@ class SearchPage extends StatelessWidget {
                     return Column(
                       children: [
                         Text(
-                          "Şehir: ${weather.cityName}",
+                          "City: ${weather.cityName}",
                           style: Theme.of(context).textTheme.headlineSmall,
                         ),
                         // Sıcaklık: tek haneli ondalıklı formatta olacak
                         Text(
-                          "Sıcaklık: ${weather.temperature.toStringAsFixed(1)}°C", // 5.x formatı
+                          "Temperature: ${weather.temperature.toStringAsFixed(1)}°C", // 5.x formatı
                           style: Theme.of(context).textTheme.bodyLarge,
                         ),
                         Text(
-                          "Durum: ${weather.description}",
+                          "Description: ${weather.description}",
                           style: Theme.of(context).textTheme.bodyLarge,
                         ),
                       ],
                     );
                   } else if (weatherState is WeatherError) {
-                    return Text("Hata: ${weatherState.message}");
+                    return Text("Error: ${weatherState.message}");
                   } else {
-                    return const Text("Bir şehir arayın...");
+                    return const Text("Enter city !!!");
                   }
                 },
               ),
@@ -101,7 +101,7 @@ class SearchPage extends StatelessWidget {
         child: Column(
           children: [
             Text(
-              "Şehir Ara",
+              "Chose your city",
               style: Theme.of(context).textTheme.labelLarge,
             ),
             const SizedBox(height: 5),

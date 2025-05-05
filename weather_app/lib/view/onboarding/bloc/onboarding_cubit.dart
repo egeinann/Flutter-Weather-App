@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:weather_app/view/app/home_page.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:weather_app/view/app/tabBar_page.dart';
 
 class OnboardingBloc extends Cubit<int> {
   OnboardingBloc() : super(0);
@@ -20,7 +20,7 @@ class OnboardingBloc extends Cubit<int> {
           PageTransition(
               duration: const Duration(milliseconds: 500),
             type: PageTransitionType.rightToLeft,
-            child: HomePage(),
+              child: TabBarPage(),
           ),
         );
         },
