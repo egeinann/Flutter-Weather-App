@@ -25,7 +25,7 @@ app.get('/cities', (req, res) => {
     }
 
     try {
-      const cities = JSON.parse(data).map(city => city.name); // Şehir adlarını alıyoruz
+      const cities = [...new Set(JSON.parse(data).map(city => city.name))];
       res.json(cities);
     } catch (parseError) {
       console.error(parseError);

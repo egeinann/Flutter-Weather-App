@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class CityService {
-  final String _baseUrl = 'http://10.0.2.2:3000/cities';
+  final String _baseUrl = 'http://192.168.0.10:3000/cities';
 
   // Şehirler listesini al
   Future<List<String>> fetchCityList() async {

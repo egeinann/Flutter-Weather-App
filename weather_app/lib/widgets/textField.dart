@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import 'package:weather_app/blocs/citySearch_bloc/city_bloc.dart';
+import 'package:weather_app/blocs/citySearch_bloc/city_cubit.dart';
 import 'package:weather_app/blocs/citySearch_bloc/city_event.dart';
 import 'package:weather_app/blocs/citySearch_bloc/city_state.dart';
 import 'package:weather_app/utils/colors.dart';
@@ -23,7 +23,7 @@ class CustomTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CityBloc, CityState>(
+    return BlocBuilder<CityCubit, CityState>(
       builder: (context, state) {
         return Container(
           width: 80.w,
@@ -65,11 +65,18 @@ class CustomTextField extends StatelessWidget {
               );
             },
             suggestionsCallback: (pattern) async {
-              context.read<CityBloc>().add(CityTextChanged(pattern));
+              final cubit = context.read<CityCubit>();
+
+              if (cubit.allCities.isEmpty) {
+                return []; // Liste hala dolmamışsa önerme
+              }
+
+              cubit.add(CityTextChanged(pattern));
               await Future.delayed(const Duration(milliseconds: 100));
-              final state = context.read<CityBloc>().state;
+
+              final state = cubit.state;
               if (state is CityLoaded) {
-                return state.cities;
+                return state.cities; // doğru veriyi döndüğünden emin olun
               } else {
                 return [];
               }
@@ -87,9 +94,7 @@ class CustomTextField extends StatelessWidget {
               if (onCitySelected != null) onCitySelected!(suggestion);
               FocusScope.of(context).unfocus();
             },
-            
           ),
-    
         );
       },
     );

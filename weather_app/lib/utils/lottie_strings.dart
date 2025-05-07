@@ -1,5 +1,5 @@
 class LottieFiles {
-  static const String _baseUrl = 'http://10.0.2.2:3000/assets/lotties/';
+  static const String _baseUrl = 'http://192.168.0.10:3000/assets/lotties/';
 
   static const String cloudy = '${_baseUrl}cloudy.json';
   static const String daynight = '${_baseUrl}daynight.json';

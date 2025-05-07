@@ -1,135 +1,120 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:responsive_sizer/responsive_sizer.dart';
-import 'package:weather_app/blocs/weatherBloc/weather_cubit.dart';
-import 'package:weather_app/blocs/citySearch_bloc/city_bloc.dart';
-import 'package:weather_app/blocs/citySearch_bloc/city_event.dart';
-import 'package:weather_app/blocs/citySearch_bloc/city_state.dart';
-import 'package:weather_app/blocs/weatherBloc/weather_state.dart';
-import 'package:weather_app/utils/image_strings.dart';
-import 'package:weather_app/widgets/blur_container.dart';
+
+import 'package:weather_app/services/weather_service.dart';
+import 'package:weather_app/utils/colors.dart';
+import 'package:weather_app/models/weather_model.dart';
 import 'package:weather_app/widgets/textField.dart';
 
-class SearchPage extends StatelessWidget {
-  SearchPage({super.key});
-  final TextEditingController _searchController = TextEditingController();
+class SearchPage extends StatefulWidget {
+  const SearchPage({super.key});
+
+  @override
+  State<SearchPage> createState() => _SearchPageState();
+}
+
+class _SearchPageState extends State<SearchPage> {
+  final TextEditingController _controller = TextEditingController();
+  String? _selectedCity;
+  WeatherModel? _weatherData;
+  bool _isLoading = false;
+  String? _errorMessage;
+
+  void _fetchWeather(String city) async {
+    setState(() {
+      _isLoading = true;
+      _errorMessage = null; // Hata mesajını sıfırlıyoruz
+    });
+
+    try {
+      final weather = await WeatherService().fetchWeather(city);
+      setState(() {
+        _weatherData = weather;
+        _isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        _errorMessage = e.toString(); // Hata mesajını set ediyoruz
+        _weatherData = null;
+        _isLoading = false;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Hata: $_errorMessage')),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: GestureDetector(
-        onTap: () => FocusScope.of(context).unfocus(),
-        child: Stack(
-          alignment: Alignment.center,
-          children: [
-            backgroundImage(),
-            textField(context),
-            buildWeather(),
-          ],
-        ),
+      backgroundColor: AppColors.background,
+      appBar: AppBar(
+        title: const Text("Şehir Arama"),
+        centerTitle: true,
       ),
-    );
-  }
-
-  // *** BUILD WEATHER WIDGET ***
-  BlocListener<CityBloc, CityState> buildWeather() {
-    return BlocListener<CityBloc, CityState>(
-      listener: (context, state) {
-        // CityBloc üzerinden gelen şehir verisini alıp WeatherCubit'i tetikleme
-        if (state is CityLoaded && state.cities.isNotEmpty) {
-          final city = state.cities.first;
-          context.read<WeatherCubit>().fetchWeatherForCity(city);
-        }
-      },
-      child: Align(
-        alignment: Alignment.bottomCenter,
-        child: Container(
-          width: 90.w,
-          height: 60.h,
-          decoration: const BoxDecoration(
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(20),
-              topRight: Radius.circular(20),
-            ),
-          ),
-          child: customBlurContainer(
-            child: Center(
-              child: BlocBuilder<WeatherCubit, WeatherState>(
-                builder: (context, weatherState) {
-                  if (weatherState is WeatherLoading) {
-                    return CircularProgressIndicator();
-                  } else if (weatherState is WeatherLoaded) {
-                    final weather = weatherState.weatherList.first;
-                    return Column(
-                      children: [
-                        Text(
-                          "City: ${weather.cityName}",
-                          style: Theme.of(context).textTheme.headlineSmall,
-                        ),
-                        // Sıcaklık: tek haneli ondalıklı formatta olacak
-                        Text(
-                          "Temperature: ${weather.temperature.toStringAsFixed(1)}°C", // 5.x formatı
-                          style: Theme.of(context).textTheme.bodyLarge,
-                        ),
-                        Text(
-                          "Description: ${weather.description}",
-                          style: Theme.of(context).textTheme.bodyLarge,
-                        ),
-                      ],
-                    );
-                  } else if (weatherState is WeatherError) {
-                    return Text("Error: ${weatherState.message}");
-                  } else {
-                    return const Text("Enter city !!!");
-                  }
-                },
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  // *** TEXT FIELD INPUT ***
-  Padding textField(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(top: 5.h),
-      child: Align(
-        alignment: Alignment.topCenter,
-        child: Column(
-          children: [
-            Text(
-              "Chose your city",
-              style: Theme.of(context).textTheme.labelLarge,
-            ),
-            const SizedBox(height: 5),
-            CustomTextField(
-              controller: _searchController,
+      body: Column(
+        children: [
+          const SizedBox(height: 16),
+          Center(
+            child: CustomTextField(
+              controller: _controller,
+              hintText: "Şehir giriniz...",
               onCitySelected: (selectedCity) {
-                // Seçilen şehir state olarak tutulacak
-                context.read<CityBloc>().add(CityTextChanged(selectedCity));
+                setState(() {
+                  _selectedCity = selectedCity;
+                  _controller.text = selectedCity;
+                });
+                _fetchWeather(selectedCity);
               },
               onCitySelectedCallback: () {
-                final city = _searchController.text.trim();
-                if (city.isNotEmpty) {
-                  context.read<CityBloc>().add(CityTextChanged(city));
+                if (_controller.text.isNotEmpty) {
+                  _fetchWeather(_controller.text);
                 }
               },
             ),
-          ],
-        ),
+          ),
+          const SizedBox(height: 24),
+          _isLoading
+              ? const CircularProgressIndicator()
+              : _errorMessage != null
+                  ? Text(
+                      "Hata: $_errorMessage",
+                      style: const TextStyle(color: Colors.red),
+                    )
+                  : _weatherData == null
+                      ? const Text("Şehir seçin ve hava durumunu görün")
+                      : _buildWeatherInfo(),
+        ],
       ),
     );
   }
 
-  // *** BACKGROUND IMAGE ***
-  Positioned backgroundImage() {
-    return Positioned.fill(
-      child: Image.network(
-        BackgroundImages.sunnyBackground,
-        fit: BoxFit.cover,
+  Widget _buildWeatherInfo() {
+    return Card(
+      color: Colors.grey,
+      margin: const EdgeInsets.all(16),
+      elevation: 4,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              _selectedCity ?? '',
+              style: Theme.of(context).textTheme.headlineSmall,
+            ),
+            const SizedBox(height: 8),
+            Text(
+              "${_weatherData!.temperature}°C",
+              style: Theme.of(context).textTheme.displayMedium,
+            ),
+            const SizedBox(height: 4),
+            Text(
+              _weatherData!.description,
+              style: Theme.of(context).textTheme.bodyLarge,
+            ),
+          ],
+        ),
       ),
     );
   }

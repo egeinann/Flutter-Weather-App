@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:weather_app/blocs/weatherBloc/weather_cubit.dart';
 import 'package:weather_app/blocs/weatherBloc/weather_state.dart';
+import 'package:weather_app/utils/colors.dart';
 import 'package:weather_app/utils/icons.dart';
 import 'package:weather_app/view/app/detail_page.dart';
 import 'package:weather_app/view/app/search_page.dart';
@@ -11,27 +12,17 @@ import 'package:weather_app/widgets/button.dart';
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // Sayfa yüklendiği anda hava durumu verilerini almak için cubiti tetikliyoruz
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<WeatherCubit>().fetchWeatherForPopularCities();
-    });
+    // Cubit çağrısı burada tetikleniyor
+    context.read<WeatherCubit>().fetchWeatherForPopularCities();
 
     return Scaffold(
+      backgroundColor: AppColors.background,
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            Expanded(
-              child: Container(
-                color: Colors.red,
-                child: buildPopularCities(),
-              ),
-            ),
-            Expanded(
-              child: Container(
-                color: Colors.green,
-              ),
-            ),
+            Expanded(child: buildPopularCities()),
+            Expanded(child: Container(color: Colors.green)),
           ],
         ),
       ),
@@ -62,59 +53,107 @@ class HomePage extends StatelessWidget {
           return Center(child: CircularProgressIndicator());
         } else if (state is WeatherLoaded) {
           return SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
             child: Column(
               children: state.weatherList.map((weather) {
                 final backgroundUrl = context
                     .read<WeatherCubit>()
                     .getCityBackgroundUrl(weather.cityName);
 
-                return Container(
-                  height: 150,
-                  margin: EdgeInsets.symmetric(vertical: 10, horizontal: 16),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    image: DecorationImage(
-                      image: NetworkImage(backgroundUrl),
-                      fit: BoxFit.cover,
-                      colorFilter: ColorFilter.mode(
-                          Colors.black.withOpacity(0.4), BlendMode.darken),
-                    ),
-                  ),
-                  child: ListTile(
-                    contentPadding: EdgeInsets.all(16),
-                    title: Text(
-                      '${weather.cityName}, ${weather.country}',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18),
-                    ),
-                    subtitle: Text(
-                      '${weather.temperature}°C, ${weather.description}',
-                      style: TextStyle(color: Colors.white70),
-                    ),
-                    trailing: SingleChildScrollView(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text('Wind speed: ${weather.windSpeed} m/s',
-                              style: TextStyle(color: Colors.white)),
-                          Text('humidity: ${weather.humidity}%',
-                              style: TextStyle(color: Colors.white)),
-                        ],
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      PageTransition(
+                        duration: const Duration(milliseconds: 200),
+                        type: PageTransitionType.rightToLeft,
+                        child: DetailPage(weather: weather),
                       ),
-                    ),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        PageTransition(
-                          duration: const Duration(milliseconds: 200),
-                          type: PageTransitionType.rightToLeft,
-                          child: DetailPage(weather: weather),
+                    );
+                  },
+                  child: Container(
+                      height: 150,
+                      margin:
+                          EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        image: DecorationImage(
+                          image: NetworkImage(backgroundUrl),
+                          fit: BoxFit.cover,
+                          colorFilter: ColorFilter.mode(
+                              Colors.black.withOpacity(0.5), BlendMode.darken),
                         ),
-                      );
-                    },
-                  ),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(10),
+                                  child: Text(
+                                    "${weather.cityName}-${weather.country}",
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headlineLarge,
+                                  ),
+                                ),
+                                Container(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 10, vertical: 5),
+                                  decoration: BoxDecoration(
+                                    color:
+                                        AppColors.background.withOpacity(0.7),
+                                    borderRadius: BorderRadius.only(
+                                      topRight: Radius.circular(10),
+                                      bottomLeft: Radius.circular(10),
+                                    ),
+                                  ),
+                                  child: Text(
+                                    weather.description,
+                                    style:
+                                        Theme.of(context).textTheme.bodyMedium,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.all(10),
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  Text(
+                                    weather.temperature.toString() + "°C",
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .displayLarge,
+                                  ),
+                                  Column(
+                                    children: [
+                                      Text(
+                                          'Wind speed: ${weather.windSpeed} m/s',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .headlineMedium),
+                                      Text('humidity: ${weather.humidity}%',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .headlineMedium),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      )),
                 );
               }).toList(),
             ),

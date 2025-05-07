@@ -3,7 +3,7 @@ import 'dart:convert';
 import '../models/weather_model.dart';
 
 class WeatherService {
-  final String _baseUrl = 'http://10.0.2.2:3000/weather';
+  final String _baseUrl = 'http://192.168.0.10:3000/weather';
 
   Future<WeatherModel> fetchWeather(String cityName) async {
     final url = Uri.parse('$_baseUrl?city=$cityName');

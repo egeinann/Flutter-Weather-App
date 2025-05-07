@@ -2,16 +2,18 @@ import 'package:bloc/bloc.dart';
 import 'package:weather_app/blocs/weatherBloc/weather_state.dart';
 import 'package:weather_app/models/weather_model.dart';
 import 'package:weather_app/services/weather_service.dart';
-import 'package:weather_app/services/city_service.dart';
 import 'package:weather_app/utils/image_strings.dart';
 
 class WeatherCubit extends Cubit<WeatherState> {
   final WeatherService weatherService;
-  final CityService cityService;
 
-  WeatherCubit(this.weatherService, this.cityService) : super(WeatherInitial());
+  bool _isInitialized = false; // ilk yükleme kontrolü
+  WeatherCubit(this.weatherService) : super(WeatherInitial());
 
+  // *** POPÜLER ŞEHİRLER İÇİN WEATHER VERİLERİ ***
   void fetchWeatherForPopularCities() async {
+    if (_isInitialized) return; // Zaten yüklendiyse tekrar yükleme
+    _isInitialized = true;
     emit(WeatherLoading());
 
     try {
@@ -59,18 +61,7 @@ class WeatherCubit extends Cubit<WeatherState> {
     }
   }
 
-  // Seçilen şehir için veri çekme fonksiyonu
-  void fetchWeatherForCity(String city) async {
-    emit(WeatherLoading());
-
-    try {
-      final weather = await weatherService.fetchWeather(city);
-      emit(WeatherLoaded([weather])); // Tek bir şehir verisi döndürülüyor
-    } catch (e) {
-      emit(WeatherError("Şehir için hava durumu alınamadı: $e"));
-    }
-  }
-
+  // *** POPÜLER ŞEHİRLERE GÖRE BACKGORUND GÖSTERİMİ ***
   String getCityBackgroundUrl(String cityName) {
     // Küçük harfe çevir, boşlukları kaldır, özel karakterleri temizle
     final lower = cityName
@@ -123,6 +114,4 @@ class WeatherCubit extends Cubit<WeatherState> {
         return CityBackgrounds.istanbul; // fallback görsel
     }
   }
-
-
 }

@@ -18,7 +18,7 @@ Widget customBlurContainer({
           child: Container(
             width: widht,
             height: height,
-            color: backgroundColor?.withOpacity(0.1) ??
+            color: backgroundColor?.withOpacity(0.4) ??
                 AppColors.background.withOpacity(0.4),
             child: BackdropFilter(
               filter: ImageFilter.blur(

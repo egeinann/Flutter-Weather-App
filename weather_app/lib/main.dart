@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import 'package:weather_app/blocs/citySearch_bloc/city_bloc.dart';
+import 'package:weather_app/blocs/citySearch_bloc/city_cubit.dart';
 import 'package:weather_app/blocs/tabBar_bloc/tab_bloc.dart';
 import 'package:weather_app/blocs/weatherBloc/weather_cubit.dart';
 import 'package:weather_app/services/city_service.dart';
 import 'package:weather_app/services/weather_service.dart';
 import 'package:weather_app/utils/theme.dart';
-import 'package:weather_app/view/onboarding/view/onboarding_page.dart';
+import 'package:weather_app/view/app/tabBar_page.dart';
 
 void main() async {
   runApp(MyApp());
@@ -26,10 +26,10 @@ class MyApp extends StatelessWidget {
         return MultiBlocProvider(
           providers: [
             BlocProvider<WeatherCubit>(
-              create: (context) => WeatherCubit(_weatherService, _cityService),
+              create: (context) => WeatherCubit(_weatherService),
             ),
-            BlocProvider<CityBloc>(
-              create: (context) => CityBloc(_cityService),
+            BlocProvider<CityCubit>(
+              create: (context) => CityCubit(_cityService),
             ),
             BlocProvider<TabCubit>(
               create: (context) => TabCubit(),
@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
           ],
           child: SafeArea(
             child: MaterialApp(
-              home: OnboardingPage(), // OnboardingPage başlangıç ekranı
+              home: TabBarPage(), // OnboardingPage başlangıç ekranı
               debugShowCheckedModeBanner: false,
               theme: AppTheme.weatherTheme, // Uygulama temasını ekledik
             ),
