@@ -6,17 +6,26 @@ class WeatherService {
   final String _baseUrl = 'http://192.168.0.10:3000/weather';
 
   Future<WeatherModel> fetchWeather(String cityName) async {
-    final url = Uri.parse('$_baseUrl?city=$cityName');
+    try {
+      final url = Uri.parse('$_baseUrl?city=$cityName');
+      final response = await http.get(url);
 
-    final response = await http.get(url);
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
 
-    if (response.statusCode == 200) {
-      final data = json.decode(response.body);
-      return WeatherModel.fromJson(data);
-    } else {
-      final errorData = json.decode(response.body);
-      throw Exception(
-          errorData['message'] ?? 'Could not fetch weather data!');
+        // JSON verisinin beklenen yapıda olup olmadığını kontrol et
+        if (data is Map<String, dynamic>) {
+          return WeatherModel.fromJson(data);
+        } else {
+          throw Exception('Beklenmeyen veri biçimi alındı.');
+        }
+      } else {
+        final errorData = json.decode(response.body);
+        throw Exception(
+            errorData['message'] ?? 'Hava durumu verisi alınamadı.');
+      }
+    } catch (e) {
+      throw Exception('Hava durumu alınırken hata oluştu: $e');
     }
   }
 }

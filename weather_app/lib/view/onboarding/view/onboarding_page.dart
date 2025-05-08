@@ -11,7 +11,6 @@ import 'package:weather_app/view/onboarding/bloc/onboarding_cubit.dart';
 import 'package:weather_app/view/onboarding/model/onboarding_model.dart';
 import 'package:weather_app/widgets/shadow_container.dart';
 
-
 class OnboardingPage extends StatelessWidget {
   OnboardingPage({super.key});
   final ValueNotifier<int> pageNotifier = ValueNotifier<int>(0);
@@ -26,7 +25,7 @@ class OnboardingPage extends StatelessWidget {
           widht: 90.w,
           child: Lottie.network(LottieFiles.downtown, fit: BoxFit.cover),
         ),
-        color: AppColors.background,
+        color: Colors.transparent,
       ),
       Onboarding(
         title: "Real-time Weather Updates",
@@ -53,6 +52,12 @@ class OnboardingPage extends StatelessWidget {
         child: Scaffold(
           body: Stack(
             children: [
+              Positioned.fill(
+                child: Image.asset(
+                  "assets/images/background.png",
+                  fit: BoxFit.cover,
+                ),
+              ),
               BlocBuilder<OnboardingBloc, int>(
                 builder: (context, currentIndex) {
                   return ConcentricPageView(
@@ -63,7 +68,7 @@ class OnboardingPage extends StatelessWidget {
                       context
                           .read<OnboardingBloc>()
                           .handlePageChange(index, context);
-                      pageNotifier.value = index.clamp(0, 2); // 👈 Güncelle
+                      pageNotifier.value = index.clamp(0, 2);
                     },
                     radius: 205,
                     scaleFactor: 1,
