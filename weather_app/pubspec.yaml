@@ -44,6 +44,7 @@ dependencies:
   concentric_transition: ^1.0.3
   flutter_typeahead: ^5.2.0
   smooth_page_indicator: ^1.2.1
+  shimmer: ^3.0.0
 
 dev_dependencies:
   flutter_test:

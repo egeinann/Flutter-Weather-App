@@ -7,11 +7,13 @@ import 'package:weather_app/blocs/weatherBloc/weather_cubit.dart';
 import 'package:weather_app/services/city_service.dart';
 import 'package:weather_app/services/weather_service.dart';
 import 'package:weather_app/utils/theme.dart';
-import 'package:weather_app/view/onboarding/view/onboarding_page.dart';
+import 'package:weather_app/view/app/tabbar/tabBar_page.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(MyApp());
 }
+
 
 class MyApp extends StatelessWidget {
   MyApp({super.key});
@@ -35,12 +37,10 @@ class MyApp extends StatelessWidget {
               create: (context) => TabCubit(),
             ),
           ],
-          child: SafeArea(
-            child: MaterialApp(
-              home: OnboardingPage(), // OnboardingPage başlangıç ekranı
-              debugShowCheckedModeBanner: false,
-              theme: AppTheme.weatherTheme, // Uygulama temasını ekledik
-            ),
+          child: MaterialApp(
+            home: TabBarPage(),
+            debugShowCheckedModeBanner: false,
+            theme: AppTheme.weatherTheme,
           ),
         );
       },

@@ -4,7 +4,7 @@ import 'package:weather_app/utils/lottie_strings.dart';
 class WeatherModel {
   final String cityName;
   final String country;
-  final int temperature; // double -> int
+  final int temperature;
   final int humidity;
   final double windSpeed;
   final String description;

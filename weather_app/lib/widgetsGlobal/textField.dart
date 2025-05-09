@@ -57,7 +57,16 @@ class CustomTextField extends StatelessWidget {
                     AppIcons.search,
                     color: AppColors.icon,
                   ),
-                  suffixIcon: _buildSuffixIcon(context),
+                  suffixIcon: GestureDetector(
+                    onTap: () {
+                      controller.clear();
+                      FocusScope.of(context).unfocus();
+                    },
+                    child: const Icon(
+                      AppIcons.close,
+                      color: AppColors.icon,
+                    ),
+                  ),
                   border: InputBorder.none,
                   contentPadding:
                       const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
@@ -97,20 +106,6 @@ class CustomTextField extends StatelessWidget {
           ),
         );
       },
-    );
-  }
-
-  Widget _buildSuffixIcon(BuildContext context) {
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        borderRadius: BorderRadius.circular(20),
-        onTap: onCitySelectedCallback,
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Icon(AppIcons.right, color: AppColors.icon),
-        ),
-      ),
     );
   }
 }

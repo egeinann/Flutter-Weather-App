@@ -11,4 +11,5 @@ class AppIcons{
   static const IconData left = Icons.arrow_back_rounded;
   static const IconData search = Icons.search;
   static const IconData city = Icons.location_city_rounded;
+  static const IconData close = Icons.close;
 }

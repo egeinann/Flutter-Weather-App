@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:page_transition/page_transition.dart';
-import 'package:weather_app/view/app/tabBar_page.dart';
+import 'package:weather_app/view/app/tabbar/tabBar_page.dart';
 
 class OnboardingBloc extends Cubit<int> {
   OnboardingBloc() : super(0);

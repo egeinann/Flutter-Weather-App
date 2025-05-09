@@ -9,7 +9,7 @@ import 'package:weather_app/utils/image_strings.dart';
 import 'package:weather_app/utils/lottie_strings.dart';
 import 'package:weather_app/view/onboarding/bloc/onboarding_cubit.dart';
 import 'package:weather_app/view/onboarding/model/onboarding_model.dart';
-import 'package:weather_app/widgets/shadow_container.dart';
+import 'package:weather_app/widgetsGlobal/shadow_container.dart';
 
 class OnboardingPage extends StatelessWidget {
   OnboardingPage({super.key});
@@ -22,7 +22,7 @@ class OnboardingPage extends StatelessWidget {
         title: "Welcome to Weatherly!",
         widget: customShadowContainer(
           height: 30.h,
-          widht: 90.w,
+          width: 90.w,
           child: Lottie.network(LottieFiles.downtown, fit: BoxFit.cover),
         ),
         color: Colors.transparent,
@@ -37,7 +37,7 @@ class OnboardingPage extends StatelessWidget {
         title: "Let's get started!",
         widget: customShadowContainer(
           height: 30.h,
-          widht: 90.w,
+          width: 90.w,
           child:
               Lottie.network(LottieFiles.partlycloudy, fit: BoxFit.scaleDown),
         ),
