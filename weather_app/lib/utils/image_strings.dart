@@ -18,7 +18,6 @@ class BackgroundImages {
 class IconImages {
   static const String _baseUrl =
       'http://192.168.0.10:3000/assets/images/icons/';
-  static const String onboardingImage = '${_baseUrl}onboardingImage.png';
   static const String windIcon = '${_baseUrl}wind.png';
   static const String sunnyIcon = '${_baseUrl}sunny.png';
   static const String cloudyIcon = '${_baseUrl}cloudy.png';
@@ -48,4 +47,10 @@ class CityBackgrounds {
   static const String sydney = '${_baseUrl}sydney.jpg';
   static const String tokyo = '${_baseUrl}tokyo.jpg';
   static const String toronto = '${_baseUrl}toronto.jpg';
+}
+
+class OnboardingImages {
+  static const String welcome = "assets/images/welcome.png";
+  static const String welcome_2 = "assets/images/welcome_2.png";
+  static const String welcome_3 = "assets/images/welcome_3.png";
 }

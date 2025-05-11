@@ -8,6 +8,7 @@ import 'package:weather_app/services/city_service.dart';
 import 'package:weather_app/services/weather_service.dart';
 import 'package:weather_app/utils/theme.dart';
 import 'package:weather_app/view/app/tabbar/tabBar_page.dart';
+import 'package:weather_app/view/onboarding/view/onboarding_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

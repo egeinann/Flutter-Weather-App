@@ -22,8 +22,8 @@ Widget customBlurContainer({
                 AppColors.background.withOpacity(0.4),
             child: BackdropFilter(
               filter: ImageFilter.blur(
-                sigmaX: 5,
-                sigmaY: 5,
+                sigmaX: 3,
+                sigmaY: 3,
               ),
               child: const SizedBox.expand(),
             ),

@@ -51,37 +51,37 @@ class AppTheme {
         // *** BIG TEXT STYLES ***
         labelLarge: TextStyle(
           color: AppColors.bigTextDark,
-          fontSize: 22.sp,
+          fontSize: 24.sp,
           fontFamily: AppFonts.outfit,
           fontWeight: FontWeight.bold,
         ),
         labelMedium: TextStyle(
           color: AppColors.bigTextDark,
-          fontSize: 20.sp,
+          fontSize: 22.sp,
           fontFamily: AppFonts.outfit,
           fontWeight: FontWeight.bold,
         ),
         labelSmall: TextStyle(
           color: AppColors.bigTextDark,
-          fontSize: 18.sp,
+          fontSize: 20.sp,
           fontFamily: AppFonts.outfit,
           fontWeight: FontWeight.bold,
         ),
         displayLarge: TextStyle(
           color: AppColors.bigTextLight,
-          fontSize: 22.sp,
+          fontSize: 24.sp,
           fontFamily: AppFonts.outfit,
           fontWeight: FontWeight.bold,
         ),
         displayMedium: TextStyle(
           color: AppColors.bigTextLight,
-          fontSize: 20.sp,
+          fontSize: 22.sp,
           fontFamily: AppFonts.outfit,
           fontWeight: FontWeight.bold,
         ),
         displaySmall: TextStyle(
           color: AppColors.bigTextLight,
-          fontSize: 18.sp,
+          fontSize: 20.sp,
           fontFamily: AppFonts.outfit,
           fontWeight: FontWeight.bold,
         ),

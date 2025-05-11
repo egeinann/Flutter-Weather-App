@@ -32,7 +32,7 @@ Widget customIconButton({
     style: IconButton.styleFrom(
       backgroundColor: backgroundColor,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(30),
+        borderRadius: BorderRadius.circular(20),
       ),
     ),
     iconSize: size,

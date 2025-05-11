@@ -1,3 +1,6 @@
+import 'dart:ui';
+
+import 'package:weather_app/utils/colors.dart';
 import 'package:weather_app/utils/image_strings.dart';
 import 'package:weather_app/utils/lottie_strings.dart';
 
@@ -128,6 +131,44 @@ class WeatherModel {
     return LottieFiles.daynight;
   }
 
+  Color get backgroundColor {
+    if (_has('thunderstorm') ||
+        _has('stormy') ||
+        _has('blizzard') ||
+        _has('freezing rain')) {
+      return WeatherColors.stormy;
+    }
+    if (_has('snowy') ||
+        _has('snow') ||
+        _has('sleet') ||
+        _has('hail') ||
+        _has('blizzard')) {
+      return WeatherColors.snowy;
+    }
+    if (_has('rainy') ||
+        _has('rain') ||
+        _has('drizzle') ||
+        _has('freezing rain')) {
+      return WeatherColors.rainy;
+    }
+    if (_has('sandstorm')) return WeatherColors.sandstorm;
+    if (_has('tornado') || _has('windy')) return WeatherColors.windy;
+    if (_has('broken clouds') ||
+        _has('few clouds') ||
+        _has('cloudy') ||
+        _has('overcast') ||
+        _has('clouds')) {
+      return WeatherColors.cloudy;
+    }
+    if (_has('clear sky') ||
+        _has('clear') ||
+        _has('sunny') ||
+        _has('partly cloudy')) {
+      return WeatherColors.sunny;
+    }
+    return WeatherColors.sunny;
+  }
+  
   factory WeatherModel.fromJson(Map<String, dynamic> json) {
     return WeatherModel(
       cityName: json['cityName'] ?? 'Unknown',

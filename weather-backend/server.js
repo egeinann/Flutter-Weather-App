@@ -69,6 +69,41 @@ app.get('/weather', async (req, res) => {
   }
 });
 
+
+app.get('/weatherByCoords', async (req, res) => {
+  const { lat, lon } = req.query;
+
+  if (!lat || !lon) {
+    return res.status(400).json({ message: 'Koordinatlar gerekli' });
+  }
+
+  try {
+    const response = await axios.get(`https://api.openweathermap.org/data/2.5/weather`, {
+      params: {
+        lat,
+        lon,
+        appid: API_KEY,
+        units: 'metric',
+        lang: 'tr',
+      },
+    });
+
+    const weatherData = {
+      cityName: response.data.name,
+      country: response.data.sys.country,
+      temperature: Math.round(response.data.main.temp),
+      humidity: response.data.main.humidity,
+      windSpeed: response.data.wind.speed,
+      description: response.data.weather[0].description,
+    };
+
+    res.json(weatherData);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: error.message || 'Backend error' });
+  }
+});
+
 // Sunucuyu başlatma
 app.listen(PORT, () => {
   console.log(`Sunucu çalışıyor: http://localhost:${PORT}`);

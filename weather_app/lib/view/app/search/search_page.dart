@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:shimmer/shimmer.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:weather_app/services/weather_service.dart';
 import 'package:weather_app/utils/colors.dart';
 import 'package:weather_app/models/weather_model.dart';
-import 'package:weather_app/widgetsGlobal/blur_container.dart';
+import 'package:weather_app/utils/icons.dart';
+import 'package:weather_app/widgetsGlobal/button.dart';
 import 'package:weather_app/widgetsGlobal/textField.dart';
 
 class SearchPage extends StatefulWidget {
@@ -19,6 +20,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
   WeatherModel? _weatherData;
   bool _isLoading = false;
   String? _errorMessage;
+  List<WeatherModel> recentWeatherData = [];
 
   late AnimationController _controllerAnim;
   late Animation<Offset> _slideAnimation;
@@ -47,9 +49,10 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
   }
 
   void _fetchWeather(String city) async {
+    FocusScope.of(context).unfocus();
     setState(() {
       _isLoading = true;
-      _errorMessage = null; // Hata mesajını sıfırlıyoruz
+      _errorMessage = null;
     });
 
     try {
@@ -57,12 +60,20 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
       setState(() {
         _weatherData = weather;
         _isLoading = false;
+
+        // Şehri listeye ekle
+        if (!recentWeatherData.any((w) => w.cityName == city)) {
+          recentWeatherData.insert(0, weather);
+          if (recentWeatherData.length > 10) {
+            recentWeatherData = recentWeatherData.sublist(0, 10);
+          }
+        }
       });
-      _controllerAnim.reset(); // Animasyonu sıfırlıyoruz
-      _controllerAnim.forward(); // Animasyonu başlatıyoruz
+      _controllerAnim.reset();
+      _controllerAnim.forward();
     } catch (e) {
       setState(() {
-        _errorMessage = e.toString(); // Hata mesajını set ediyoruz
+        _errorMessage = e.toString();
         _weatherData = null;
         _isLoading = false;
       });
@@ -77,29 +88,48 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: AppColors.background,
-      body: Stack(
-        children: [
-          Align(
-            alignment: Alignment.topCenter,
-            child: textField(),
-          ),
-          Align(
-            alignment: Alignment.center,
-            child: _isLoading
-                ? buildShimmerEffect()
-                : _errorMessage != null
-                    ? Text(
-                        "Hata: $_errorMessage",
-                        style: const TextStyle(color: Colors.red),
-                      )
-                    : _weatherData == null
-                        ? const Text("Şehir seçin ve hava durumunu görün")
-                        : SlideTransition(
-                            position: _slideAnimation,
-                            child: buildWeatherCard(),
-                          ),
-          ),
-        ],
+      body: GestureDetector(
+        onTap: () => FocusScope.of(context).unfocus(),
+        child: Stack(
+          children: [
+            Align(
+              alignment: Alignment.topCenter,
+              child: textField(),
+            ),
+            Align(
+              alignment: Alignment.center,
+              child: _isLoading
+                  ? SizedBox()
+                  : _errorMessage != null
+                      ? Text(
+                          "Hata: $_errorMessage",
+                          style: const TextStyle(color: Colors.red),
+                        )
+                      : _weatherData == null
+                          ? const Text("Şehir seçin ve hava durumunu görün")
+                          : SlideTransition(
+                              position: _slideAnimation,
+                              child: buildWeatherCard(),
+                            ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 10),
+              child: Align(
+                alignment: Alignment.bottomCenter,
+                child: customButton(
+                  onPressed: () {
+                    showModalBottomSheet(
+                      context: context,
+                      backgroundColor: Colors.transparent,
+                      builder: (context) => buildRecentCitiesSheet(),
+                    );
+                  },
+                  child: Icon(AppIcons.history),
+                ),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
@@ -107,7 +137,6 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
   CustomTextField textField() {
     return CustomTextField(
       controller: _controller,
-      hintText: "Şehir giriniz...",
       onCitySelected: (selectedCity) {
         setState(() {
           _selectedCity = selectedCity;
@@ -123,62 +152,102 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
     );
   }
 
-  Widget buildShimmerEffect() {
-    return Shimmer.fromColors(
-      baseColor: Colors.grey.shade300,
-      highlightColor: Colors.grey.shade100,
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              height: 20,
-              width: 150,
-              color: Colors.white,
-            ),
-            const SizedBox(height: 8),
-            Container(
-              height: 30,
-              width: 100,
-              color: Colors.white,
-            ),
-            const SizedBox(height: 4),
-            Container(
-              height: 15,
-              width: 200,
-              color: Colors.white,
-            ),
-          ],
+  Widget buildWeatherCard() {
+    return Container(
+      height: 30.h,
+      width: 80.w,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        image: DecorationImage(
+          image: NetworkImage(_weatherData!.backgroundImage),
+          fit: BoxFit.cover,
         ),
+      ),
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          Column(
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "${_weatherData!.country} - ${_selectedCity ?? ""}",
+                        style: Theme.of(context).textTheme.headlineLarge,
+                      ),
+                      Text(
+                        "${_weatherData!.temperature}°C",
+                        style: Theme.of(context).textTheme.displayLarge,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadiusDirectional.only(
+                      bottomEnd: Radius.circular(20),
+                      bottomStart: Radius.circular(20),
+                      topEnd: Radius.circular(100),
+                      topStart: Radius.circular(100),
+                    ),
+                    color: _weatherData!.backgroundColor.withOpacity(0.6),
+                  ),
+                  child: Center(
+                    child: Text(
+                      _weatherData!.description,
+                      style: Theme.of(context).textTheme.displayMedium,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Image.network(
+            _weatherData!.iconAsset,
+            fit: BoxFit.cover,
+            height: 10.h,
+          ),
+        ],
       ),
     );
   }
 
-  Widget buildWeatherCard() {
-    return customBlurContainer(
-      backgroundColor: Colors.red,
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              _selectedCity ?? '',
-              style: Theme.of(context).textTheme.headlineSmall,
+  Widget buildRecentCitiesSheet() {
+    return Container(
+      decoration: BoxDecoration(
+        color: AppColors.background,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text("Last searched cities",
+              style: Theme.of(context).textTheme.headlineSmall),
+          ...recentWeatherData.map(
+            (weather) => ListTile(
+              title: Text(weather.cityName),
+              subtitle: Text(weather.description),
+              trailing: Text(
+                "${weather.temperature}°C",
+                style: Theme.of(context).textTheme.displayLarge,
+              ),
+              onTap: () {
+                Navigator.pop(context);
+                FocusScope.of(context).unfocus();
+                _controller.text = weather.cityName;
+                _fetchWeather(weather.cityName);
+              },
             ),
-            const SizedBox(height: 8),
-            Text(
-              "${_weatherData!.temperature}°C",
-              style: Theme.of(context).textTheme.displayMedium,
-            ),
-            const SizedBox(height: 4),
-            Text(
-              _weatherData!.description,
-              style: Theme.of(context).textTheme.bodyLarge,
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
