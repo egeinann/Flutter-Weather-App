@@ -9,28 +9,32 @@ Widget customBlurContainer({
   Color? backgroundColor,
   double? widht,
   double? height,
+  double x = 3,
+  double y = 3,
 }) {
   return ClipRRect(
     borderRadius: BorderRadius.circular(borderRadius),
-    child: Stack(
-      children: [
-        Positioned.fill(
-          child: Container(
-            width: widht,
-            height: height,
-            color: backgroundColor?.withOpacity(0.4) ??
-                AppColors.background.withOpacity(0.4),
-            child: BackdropFilter(
-              filter: ImageFilter.blur(
-                sigmaX: 3,
-                sigmaY: 3,
+    child: Container(
+      width: widht,
+      height: height,
+      child: Stack(
+        children: [
+          Positioned.fill(
+            child: Container(
+              color: backgroundColor?.withOpacity(0.4) ??
+                  AppColors.background.withOpacity(0.4),
+              child: BackdropFilter(
+                filter: ImageFilter.blur(
+                  sigmaX: x,
+                  sigmaY: y,
+                ),
+                child: const SizedBox.expand(),
               ),
-              child: const SizedBox.expand(),
             ),
           ),
-        ),
-        child,
-      ],
+          child,
+        ],
+      ),
     ),
   );
 }

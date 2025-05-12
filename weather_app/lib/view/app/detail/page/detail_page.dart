@@ -16,29 +16,7 @@ class DetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<MoredetailsModel> moreDetails = [
-      MoredetailsModel(
-          backgroundColor: Colors.pink,
-          title: "humidity",
-          value: "${weather.humidity}%",
-          image: IconImages.rainIcon),
-      MoredetailsModel(
-          backgroundColor: Colors.blue,
-          title: "windSpeed",
-          value: "${weather.windSpeed}m/s",
-          image: IconImages.tornadoIcon),
-      MoredetailsModel(
-          backgroundColor: Colors.green,
-          title: "tempMin",
-          value: "${weather.tempMin}°",
-          image: IconImages.minTemp),
-      MoredetailsModel(
-        backgroundColor: Colors.orange,
-        title: "tempMax",
-        value: "${weather.tempMax}°",
-        image: IconImages.maxTemp,
-      ),
-    ];
+
     return Scaffold(
       body: GestureDetector(
         child: Container(
@@ -70,7 +48,7 @@ class DetailPage extends StatelessWidget {
                   ],
                 ),
               ),
-              detailBottomSheet(moreDetails),
+              detailBottomSheet(weather),
             ],
           ),
         ),

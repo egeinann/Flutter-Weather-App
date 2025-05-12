@@ -122,7 +122,23 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
               padding: const EdgeInsets.only(bottom: 10),
               child: Align(
                 alignment: Alignment.bottomCenter,
-                child: customButton(
+                child: FloatingActionButton.extended(
+                  label: Text(
+                    "Last searched",
+                    style: Theme.of(context).textTheme.headlineLarge,
+                  ),
+                  heroTag: "hometosearch",
+                  backgroundColor: AppColors.container,
+                  splashColor: AppColors.background,
+                  foregroundColor: AppColors.background,
+                  elevation: 20,
+                  shape: ContinuousRectangleBorder(
+                    side: BorderSide(
+                      width: 2,
+                      color: AppColors.shadow,
+                    ),
+                    borderRadius: BorderRadius.circular(23),
+                  ),
                   onPressed: () {
                     showModalBottomSheet(
                       context: context,
@@ -130,7 +146,6 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                       builder: (context) => buildRecentCitiesSheet(),
                     );
                   },
-                  child: Icon(AppIcons.history),
                 ),
               ),
             )
