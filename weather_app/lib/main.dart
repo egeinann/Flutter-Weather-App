@@ -2,13 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:weather_app/blocs/citySearch_bloc/city_cubit.dart';
-import 'package:weather_app/blocs/tabBar_bloc/tab_bloc.dart';
 import 'package:weather_app/blocs/weatherBloc/weather_cubit.dart';
 import 'package:weather_app/services/city_service.dart';
 import 'package:weather_app/services/weather_service.dart';
 import 'package:weather_app/utils/theme.dart';
-import 'package:weather_app/view/app/tabbar/tabBar_page.dart';
-import 'package:weather_app/view/onboarding/view/onboarding_page.dart';
+import 'package:weather_app/view/app/home/page/home_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -34,14 +32,13 @@ class MyApp extends StatelessWidget {
             BlocProvider<CityCubit>(
               create: (context) => CityCubit(_cityService),
             ),
-            BlocProvider<TabCubit>(
-              create: (context) => TabCubit(),
-            ),
           ],
-          child: MaterialApp(
-            home: TabBarPage(),
-            debugShowCheckedModeBanner: false,
-            theme: AppTheme.weatherTheme,
+          child: SafeArea(
+            child: MaterialApp(
+              home: HomePage(),
+              debugShowCheckedModeBanner: false,
+              theme: AppTheme.weatherTheme,
+            ),
           ),
         );
       },

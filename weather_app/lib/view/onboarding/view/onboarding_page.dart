@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:concentric_transition/concentric_transition.dart';
-import 'package:lottie/lottie.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:weather_app/utils/colors.dart';
 import 'package:weather_app/utils/icons.dart';
 import 'package:weather_app/utils/image_strings.dart';
-import 'package:weather_app/utils/lottie_strings.dart';
 import 'package:weather_app/view/onboarding/bloc/onboarding_cubit.dart';
 import 'package:weather_app/view/onboarding/model/onboarding_model.dart';
 import 'package:weather_app/widgetsGlobal/blur_container.dart';
@@ -25,7 +23,7 @@ class OnboardingPage extends StatelessWidget {
         widget: customShadowContainer(
           height: 30.h,
           width: 90.w,
-          child: Lottie.network(LottieFiles.downtown, fit: BoxFit.cover),
+          child: Text("qweqwe"),
         ),
         color: Colors.transparent,
       ),

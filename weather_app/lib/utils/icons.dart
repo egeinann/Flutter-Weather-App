@@ -13,4 +13,5 @@ class AppIcons{
   static const IconData city = Icons.location_city_rounded;
   static const IconData close = Icons.close;
   static const IconData history = Icons.history;
+  static const IconData location = Icons.location_on;
 }
