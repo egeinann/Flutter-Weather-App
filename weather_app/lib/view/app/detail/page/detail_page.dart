@@ -51,7 +51,7 @@ class DetailPage extends StatelessWidget {
                   imageUrl: weather.backgroundImage,
                   fit: BoxFit.cover,
                   placeholder: (context, url) => customShimmer(
-                    Container(color: Colors.grey[300]),
+                    Container(color: Colors.grey[300]), // Shimmer background
                   ),
                   errorWidget: (context, url, error) => Container(
                     color: Colors.grey,

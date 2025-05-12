@@ -1,6 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:weather_app/models/weather_model.dart';
+import 'package:weather_app/widgetsGlobal/shimmer.dart';
 
 Widget detailBuildIcon(WeatherModel weather) {
   return TweenAnimationBuilder<Offset>(
@@ -16,10 +18,16 @@ Widget detailBuildIcon(WeatherModel weather) {
         ),
       );
     },
-    child: Image(
-      image: AssetImage(weather.iconAsset),
+    child: CachedNetworkImage(
+      imageUrl: weather.iconAsset, // Burada iconAsset artık bir URL olacak
       fit: BoxFit.scaleDown,
       height: 40.sp,
+      placeholder: (context, url) {
+        // Shimmer sadece görsel yüklenene kadar gösterilsin
+        return customShimmer(SizedBox());
+      },
+      errorWidget: (context, url, error) =>
+          Icon(Icons.error), // Hata durumunda bir ikon
     ),
   );
 }

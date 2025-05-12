@@ -95,9 +95,12 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
         onTap: () => FocusScope.of(context).unfocus(),
         child: Stack(
           children: [
-            Align(
-              alignment: Alignment.topCenter,
-              child: textField(),
+            Padding(
+              padding: const EdgeInsets.only(top: 20),
+              child: Align(
+                alignment: Alignment.topCenter,
+                child: textField(),
+              ),
             ),
             Align(
               alignment: Alignment.center,

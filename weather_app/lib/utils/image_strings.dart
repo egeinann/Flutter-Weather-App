@@ -18,25 +18,26 @@ class BackgroundImages {
 }
 
 class IconImages {
-  static const String cloudyIcon = 'assets/icons/cloudy.png';
-  static const String dayClearIcon = 'assets/icons/day_clearly.png';
-  static const String dayFoggyIcon = 'assets/icons/day_foggy.png';
-  static const String dayPartlyCloudyIcon = 'assets/icons/day_partlyCloudy.png';
-  static const String dayRainyIcon = 'assets/icons/day_rainy.png';
-  static const String daySnowyIcon = 'assets/icons/day_snowy.png';
-  static const String dayThunderIcon = 'assets/icons/day_thunder.png';
-  static const String nightClearIcon = 'assets/icons/night_clearly.png';
-  static const String nightFoggyIcon = 'assets/icons/night_foggy.png';
+  static const String _baseUrl = 'http://192.168.0.10:3000/assets/icons/';
+  static const String cloudyIcon = '${_baseUrl}cloudy.png';
+  static const String dayClearIcon = '${_baseUrl}day_clearly.png';
+  static const String dayFoggyIcon = '${_baseUrl}day_foggy.png';
+  static const String dayPartlyCloudyIcon = '${_baseUrl}day_partlyCloudy.png';
+  static const String dayRainyIcon = '${_baseUrl}day_rainy.png';
+  static const String daySnowyIcon = '${_baseUrl}day_snowy.png';
+  static const String dayThunderIcon = '${_baseUrl}day_thunder.png';
+  static const String nightClearIcon = '${_baseUrl}night_clearly.png';
+  static const String nightFoggyIcon = '${_baseUrl}night_foggy.png';
   static const String nightPartlyCloudyIcon =
-      'assets/icons/night_partlyCloudy.png';
-  static const String nightRainyIcon = 'assets/icons/night_rainy.png';
-  static const String nightSnowyIcon = 'assets/icons/night_snowy.png';
-  static const String nightThunderIcon = 'assets/icons/night_thunder.png';
-  static const String rainIcon = 'assets/icons/rain.png';
-  static const String tornadoIcon = 'assets/icons/tornado.png';
-  static const String windIcon = 'assets/icons/wind.png';
-  static const String minTemp = 'assets/icons/minTemp.png';
-  static const String maxTemp = 'assets/icons/maxTemp.png';
+      '${_baseUrl}night_partlyCloudy.png';
+  static const String nightRainyIcon = '${_baseUrl}night_rainy.png';
+  static const String nightSnowyIcon = '${_baseUrl}night_snowy.png';
+  static const String nightThunderIcon = '${_baseUrl}night_thunder.png';
+  static const String rainIcon = '${_baseUrl}rain.png';
+  static const String tornadoIcon = '${_baseUrl}tornado.png';
+  static const String windIcon = '${_baseUrl}wind.png';
+  static const String minTemp = '${_baseUrl}minTemp.png';
+  static const String maxTemp = '${_baseUrl}maxTemp.png';
 }
 
 class CityBackgrounds {

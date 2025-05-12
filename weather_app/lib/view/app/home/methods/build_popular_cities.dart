@@ -53,10 +53,10 @@ BlocBuilder<WeatherCubit, WeatherState> buildPopularCities() {
                           imageUrl: backgroundUrl,
                           fit: BoxFit.cover,
                           placeholder: (context, url) => customShimmer(
-                            Container(color: Colors.grey[300]),
+                            Container(color: Colors.grey[100]),
                           ),
                           errorWidget: (context, url, error) => Container(
-                            color: Colors.grey,
+                            color: Colors.red,
                             child: const Icon(Icons.error, color: Colors.white),
                           ),
                         ),
@@ -175,7 +175,7 @@ Widget _buildShimmerCard() {
   return Padding(
     padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
     child: Shimmer.fromColors(
-      baseColor: Colors.grey.shade300,
+      baseColor: Colors.grey.shade100,
       highlightColor: Colors.white,
       child: Container(
         height: 150,

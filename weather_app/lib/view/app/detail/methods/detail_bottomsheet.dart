@@ -1,13 +1,16 @@
 // *** BOTTOM KAYDIRILABİLİR SHEET ***
-  import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:weather_app/models/moreDetails_model.dart';
 import 'package:weather_app/utils/colors.dart';
 import 'package:weather_app/widgetsGlobal/blur_container.dart';
 import 'package:weather_app/widgetsGlobal/shadow_container.dart';
+import 'package:weather_app/widgetsGlobal/shimmer.dart';
 
 Widget detailBottomSheet(List<MoredetailsModel> moreDetails) {
-  final DraggableScrollableController _sheetController = DraggableScrollableController();
+  final DraggableScrollableController _sheetController =
+      DraggableScrollableController();
   return Positioned(
     bottom: 0,
     left: 0,
@@ -71,26 +74,36 @@ Widget detailBottomSheet(List<MoredetailsModel> moreDetails) {
                                       mainAxisSize: MainAxisSize.max,
                                       children: [
                                         Padding(
-                                          padding: const EdgeInsets.symmetric(horizontal: 5),
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 5),
                                           child: customShadowContainer(
                                             height: 120,
                                             width: double.infinity,
-                                            backgroundColor: detail.backgroundColor,
+                                            backgroundColor:
+                                                detail.backgroundColor,
                                             child: Padding(
-                                              padding: const EdgeInsets.symmetric(horizontal: 2),
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 2),
                                               child: Column(
-                                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceEvenly,
                                                 children: [
                                                   FittedBox(
                                                     child: Text(
                                                       detail.title,
-                                                      style: Theme.of(context).textTheme.headlineLarge,
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .headlineLarge,
                                                     ),
                                                   ),
                                                   FittedBox(
                                                     child: Text(
                                                       detail.value,
-                                                      style: Theme.of(context).textTheme.headlineLarge,
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .headlineLarge,
                                                     ),
                                                   ),
                                                 ],
@@ -101,10 +114,20 @@ Widget detailBottomSheet(List<MoredetailsModel> moreDetails) {
                                         Spacer(),
                                       ],
                                     ),
-                                    Image.asset(
-                                      detail.image,
+                                    CachedNetworkImage(
+                                      imageUrl: detail.image,
                                       fit: BoxFit.scaleDown,
                                       height: 50,
+                                      placeholder: (context, url) =>
+                                          customShimmer(
+                                        Container(
+                                          width: 50,
+                                          height: 50,
+                                          color: Colors.grey[300],
+                                        ),
+                                      ),
+                                      errorWidget: (context, url, error) =>
+                                          const Icon(Icons.error),
                                     ),
                                   ],
                                 ),
