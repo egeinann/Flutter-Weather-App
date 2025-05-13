@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:weather_app/data/sharedPref.dart';
 import 'package:weather_app/view/app/home/page/home_page.dart';
 
 class OnboardingBloc extends Cubit<int> {
@@ -14,15 +15,17 @@ class OnboardingBloc extends Cubit<int> {
     if (isLastPage && isAttemptingNextPage) {
       Future.delayed(
         const Duration(milliseconds: 300),
-        () {
-        Navigator.pushReplacement(
-          context,
-          PageTransition(
+        () async {
+          Navigator.pushReplacement(
+            context,
+            PageTransition(
               duration: const Duration(milliseconds: 500),
-            type: PageTransitionType.rightToLeft,
+              type: PageTransitionType.rightToLeft,
               child: HomePage(),
-          ),
-        );
+            ),
+          );
+          await SharedPreferencesService.setOnboardingCompleted(true);
+          print("onboarding geçildi!!!");
         },
       );
     }

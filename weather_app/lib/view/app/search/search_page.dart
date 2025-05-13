@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:weather_app/data/sharedPref.dart';
 import 'package:weather_app/services/weather_service.dart';
 import 'package:weather_app/utils/colors.dart';
 import 'package:weather_app/models/weather_model.dart';
@@ -45,6 +46,8 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
         curve: Curves.easeIn,
       ),
     );
+
+    _loadRecentWeatherData();
   }
 
   @override
@@ -52,6 +55,12 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
     _controllerAnim.dispose();
     _controller.dispose();
     super.dispose();
+  }
+
+  void _loadRecentWeatherData() {
+    setState(() {
+      recentWeatherData = SharedPreferencesService.getRecentWeatherList();
+    });
   }
 
   // *** GİRİLEN ŞEHİR İÇİN HAVA DURUMUNU ÇEK ***
@@ -67,15 +76,11 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
       setState(() {
         _weatherData = weather;
         _isLoading = false;
-
-        // Şehri listeye ekle
-        if (!recentWeatherData.any((w) => w.cityName == city)) {
-          recentWeatherData.insert(0, weather);
-          if (recentWeatherData.length > 10) {
-            recentWeatherData = recentWeatherData.sublist(0, 10);
-          }
-        }
       });
+
+      // ✅ Kaydet ve listeyi güncelle
+      await SharedPreferencesService.addToRecentWeather(weather);
+      _loadRecentWeatherData(); // tekrar yükle
       _controllerAnim.reset();
       _controllerAnim.forward();
     } catch (e) {

@@ -26,7 +26,22 @@ class WeatherModel {
     required this.tempMax,
   });
 
-  // JSON TO DART
+  // JSON'a çevir
+  Map<String, dynamic> toJson() {
+    return {
+      'cityName': cityName,
+      'country': country,
+      'temperature': temperature,
+      'humidity': humidity,
+      'windSpeed': windSpeed,
+      'description': description,
+      'isDay': isDay,
+      'tempMin': tempMin,
+      'tempMax': tempMax,
+    };
+  }
+
+  // JSON'dan nesneye çevir
   factory WeatherModel.fromJson(Map<String, dynamic> json) {
     return WeatherModel(
       cityName: json['cityName'] ?? 'Unknown',
