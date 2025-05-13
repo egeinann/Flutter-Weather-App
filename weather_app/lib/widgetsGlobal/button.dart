@@ -30,10 +30,9 @@ Widget customIconButton({
   return IconButton(
     onPressed: onPressed,
     style: IconButton.styleFrom(
+        foregroundColor: AppColors.background,
       backgroundColor: backgroundColor,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
-      ),
+        shape: CircleBorder()
     ),
     iconSize: size,
     icon: Icon(

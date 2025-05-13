@@ -13,12 +13,14 @@ class CustomTextField extends StatelessWidget {
   final String hintText;
   final Function(String)? onCitySelected;
   final VoidCallback onCitySelectedCallback;
+  final FocusNode? focusnode;
   const CustomTextField({
     super.key,
     required this.controller,
     this.hintText = 'Enter city...',
     this.onCitySelected,
     required this.onCitySelectedCallback,
+    this.focusnode,
   });
 
   @override
@@ -32,7 +34,7 @@ class CustomTextField extends StatelessWidget {
             borderRadius: BorderRadius.circular(10),
             boxShadow: [
               BoxShadow(
-                color: AppColors.shadow,
+                color: const Color.fromARGB(255, 202, 204, 207),
                 blurRadius: 1,
                 spreadRadius: 1,
                 blurStyle: BlurStyle.inner,

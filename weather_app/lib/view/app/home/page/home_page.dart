@@ -21,11 +21,9 @@ class HomePage extends StatelessWidget {
       body: Stack(
         alignment: Alignment.topCenter,
         children: [
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(10),
-              child: buildPopularCities(),
-            ),
+          Padding(
+            padding: const EdgeInsets.all(10),
+            child: buildPopularCities(),
           ),
           customBlurContainer(
             borderRadius: 10,

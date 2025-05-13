@@ -7,6 +7,7 @@ import 'package:weather_app/services/city_service.dart';
 import 'package:weather_app/services/weather_service.dart';
 import 'package:weather_app/utils/theme.dart';
 import 'package:weather_app/view/app/home/page/home_page.dart';
+import 'package:weather_app/view/onboarding/view/onboarding_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -35,7 +36,7 @@ class MyApp extends StatelessWidget {
           ],
           child: SafeArea(
             child: MaterialApp(
-              home: HomePage(),
+              home: OnboardingPage(),
               debugShowCheckedModeBanner: false,
               theme: AppTheme.weatherTheme,
             ),

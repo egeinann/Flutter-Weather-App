@@ -20,11 +20,7 @@ class OnboardingPage extends StatelessWidget {
     final List<Onboarding> pages = [
       Onboarding(
         title: "Welcome to Weatherly!",
-        widget: customShadowContainer(
-          height: 30.h,
-          width: 90.w,
-          child: Text("qweqwe"),
-        ),
+        widget: SizedBox(),
         color: Colors.transparent,
       ),
       Onboarding(

@@ -17,7 +17,7 @@ BlocBuilder<WeatherCubit, WeatherState> buildPopularCities() {
         return SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
           child: Column(
-            children: List.generate(3, (index) => _buildShimmerCard()),
+            children: List.generate(5, (index) => _buildShimmerCard()),
           ),
         );
       } else if (state is WeatherLoaded) {

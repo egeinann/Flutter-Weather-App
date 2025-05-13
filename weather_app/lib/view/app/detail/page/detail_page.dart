@@ -1,8 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:weather_app/models/moreDetails_model.dart';
 import 'package:weather_app/models/weather_model.dart';
-import 'package:weather_app/utils/image_strings.dart';
 import 'package:weather_app/view/app/detail/methods/detail_appbar.dart';
 import 'package:weather_app/view/app/detail/methods/detail_bottomsheet.dart';
 import 'package:weather_app/view/app/detail/methods/detail_build_icon.dart';

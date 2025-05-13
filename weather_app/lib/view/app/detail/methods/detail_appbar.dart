@@ -25,6 +25,7 @@ Widget detailAppBar(BuildContext context, WeatherModel weather) {
         IconButton(
           onPressed: () {
             Navigator.pop(context);
+            FocusScope.of(context).unfocus();
           },
           icon: Icon(
             Icons.arrow_back_ios_rounded,
