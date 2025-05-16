@@ -1,13 +1,13 @@
 import 'package:bloc/bloc.dart';
 import 'package:weather_app/blocs/weatherBloc/weather_state.dart';
 import 'package:weather_app/models/weather_model.dart';
-import 'package:weather_app/services/weather_service.dart';
+import 'package:weather_app/servicesAPI/weather_service.dart';
 import 'package:weather_app/utils/image_strings.dart';
 
 class WeatherCubit extends Cubit<WeatherState> {
   final WeatherService weatherService;
-
   bool _isInitialized = false; // ilk yükleme kontrolü
+
   WeatherCubit(this.weatherService) : super(WeatherInitial());
 
   // *** POPÜLER ŞEHİRLER İÇİN WEATHER VERİLERİ ***
@@ -61,13 +61,61 @@ class WeatherCubit extends Cubit<WeatherState> {
     }
   }
 
+  // *** YENİLEME (RefreshIndicator için) ***
+  Future<void> refreshWeather() async {
+    emit(WeatherLoading());
+
+    try {
+      List<String> popularCities = [
+        'New York',
+        'London',
+        'Paris',
+        'Tokyo',
+        'Istanbul',
+        'Moscow',
+        'Los Angeles',
+        'Beijing',
+        'Berlin',
+        'Rome',
+        'Dubai',
+        'Toronto',
+        'Chicago',
+        'Seoul',
+        'Barcelona',
+        'Amsterdam',
+        'Sydney',
+        'São Paulo',
+      ];
+
+      final results = await Future.wait(
+        popularCities.map((city) async {
+          try {
+            return await weatherService.fetchWeather(city);
+          } catch (e) {
+            print("Şehir atlandı (yenileme): $city - $e");
+            return null;
+          }
+        }),
+      );
+
+      final weatherList = results.whereType<WeatherModel>().toList();
+
+      if (weatherList.isNotEmpty) {
+        emit(WeatherLoaded(weatherList));
+      } else {
+        emit(WeatherError("Yenilemede veri alınamadı!"));
+      }
+    } catch (e) {
+      emit(WeatherError("Yenileme hatası: $e"));
+    }
+  }
+
   // *** POPÜLER ŞEHİRLERE GÖRE BACKGORUND GÖSTERİMİ ***
   String getCityBackgroundUrl(String cityName) {
-    // Küçük harfe çevir, boşlukları kaldır, özel karakterleri temizle
     final lower = cityName
         .toLowerCase()
         .replaceAll(' ', '')
-        .replaceAll('ã', 'a') // São Paulo → saopaulo
+        .replaceAll('ã', 'a')
         .replaceAll('á', 'a')
         .replaceAll('é', 'e')
         .replaceAll('ç', 'c')
@@ -111,7 +159,7 @@ class WeatherCubit extends Cubit<WeatherState> {
       case 'toronto':
         return CityBackgrounds.toronto;
       default:
-        return CityBackgrounds.istanbul; // fallback görsel
+        return CityBackgrounds.istanbul;
     }
   }
 }

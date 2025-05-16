@@ -16,151 +16,166 @@ BlocBuilder<WeatherCubit, WeatherState> buildPopularCities() {
       if (state is WeatherLoading) {
         return SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
-          child: Column(
-            children: List.generate(5, (index) => _buildShimmerCard()),
+          child: Padding(
+            padding: EdgeInsets.all(10),
+            child: Column(
+              children: [
+                SizedBox(height: 30.h), // Yukarıdan 30 birim boşluk
+                ...List.generate(5, (index) => _buildShimmerCard()),
+              ],
+            ),
           ),
         );
       } else if (state is WeatherLoaded) {
-        return SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          child: Column(
-            children: [
-              SizedBox(height: 32.h),
-              ...state.weatherList.map((weather) {
-                final backgroundUrl = context
-                    .read<WeatherCubit>()
-                    .getCityBackgroundUrl(weather.cityName);
+        return RefreshIndicator(
+          onRefresh: () async {
+            await context
+                .read<WeatherCubit>()
+                .refreshWeather(); // Yenileme fonksiyonu
+          },
+          child: SingleChildScrollView(
+            physics: const AlwaysScrollableScrollPhysics(), // zorunlu!
+            child: Column(
+              children: [
+                SizedBox(height: 30.h),
+                ...state.weatherList.map((weather) {
+                  final backgroundUrl = context
+                      .read<WeatherCubit>()
+                      .getCityBackgroundUrl(weather.cityName);
 
-                return GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      PageTransition(
-                        duration: const Duration(milliseconds: 200),
-                        type: PageTransitionType.rightToLeft,
-                        child: DetailPage(weather: weather),
-                      ),
-                    );
-                  },
-                  child: Container(
-                    height: 150,
-                    margin: const EdgeInsets.symmetric(
-                        vertical: 10, horizontal: 15),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
-                      child: Stack(
-                        fit: StackFit.expand,
-                        children: [
-                          CachedNetworkImage(
-                            imageUrl: backgroundUrl,
-                            fit: BoxFit.cover,
-                            placeholder: (context, url) => customShimmer(
-                              Container(color: Colors.grey[100]),
-                            ),
-                            errorWidget: (context, url, error) => Container(
-                              color: Colors.red,
-                              child:
-                                  const Icon(Icons.error, color: Colors.white),
-                            ),
-                          ),
-                          Container(
-                            decoration: BoxDecoration(
-                              color: Colors.black.withOpacity(0.5),
-                            ),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Expanded(
-                                child: Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.all(10),
-                                      child: customShimmer(
-                                        Text(
-                                          "${weather.cityName}-${weather.country}",
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .headlineLarge,
-                                        ),
-                                      ),
-                                    ),
-                                    Container(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 10, vertical: 5),
-                                      decoration: BoxDecoration(
-                                        color: AppColors.background
-                                            .withOpacity(0.7),
-                                        borderRadius: const BorderRadius.only(
-                                          topRight: Radius.circular(10),
-                                          bottomLeft: Radius.circular(10),
-                                        ),
-                                      ),
-                                      child: customShimmer(
-                                        Text(
-                                          weather.description,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodyMedium,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        PageTransition(
+                          duration: const Duration(milliseconds: 200),
+                          type: PageTransitionType.rightToLeftWithFade,
+                          child: DetailPage(weather: weather),
+                        ),
+                      );
+                    },
+                    child: Container(
+                      height: 150,
+                      margin: const EdgeInsets.symmetric(
+                          vertical: 10, horizontal: 15),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: Stack(
+                          fit: StackFit.expand,
+                          children: [
+                            CachedNetworkImage(
+                              imageUrl: backgroundUrl,
+                              fit: BoxFit.cover,
+                              placeholder: (context, url) => customShimmer(
+                                Container(color: Colors.grey[100]),
                               ),
-                              Expanded(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(10),
+                              errorWidget: (context, url, error) => Container(
+                                color: Colors.red,
+                                child: const Icon(Icons.error,
+                                    color: Colors.white),
+                              ),
+                            ),
+                            Container(
+                              decoration: BoxDecoration(
+                                color: Colors.black.withOpacity(0.5),
+                              ),
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Expanded(
                                   child: Column(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
-                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
-                                      customShimmer(
-                                        Text(
-                                          "${weather.temperature}°C",
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .displayLarge,
+                                      Padding(
+                                        padding: const EdgeInsets.all(10),
+                                        child: customShimmer(
+                                          Text(
+                                            "${weather.cityName}-${weather.country}",
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .headlineLarge,
+                                          ),
                                         ),
                                       ),
-                                      Column(
-                                        children: [
-                                          customShimmer(
-                                            Text(
-                                              'Wind speed: ${weather.windSpeed} m/s',
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .headlineMedium,
-                                            ),
+                                      Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 10, vertical: 5),
+                                        decoration: BoxDecoration(
+                                          color: AppColors.background
+                                              .withOpacity(0.7),
+                                          borderRadius: const BorderRadius.only(
+                                            topRight: Radius.circular(10),
+                                            bottomLeft: Radius.circular(10),
                                           ),
-                                          customShimmer(
-                                            Text(
-                                              'Humidity: ${weather.humidity}%',
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .headlineMedium,
-                                            ),
+                                        ),
+                                        child: customShimmer(
+                                          Text(
+                                            weather.description,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodyMedium,
                                           ),
-                                        ],
+                                        ),
                                       ),
                                     ],
                                   ),
                                 ),
-                              ),
-                            ],
-                          ),
-                        ],
+                                Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(10),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: [
+                                        customShimmer(
+                                          Text(
+                                            "${weather.temperature}°C",
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .displayLarge,
+                                          ),
+                                        ),
+                                        Column(
+                                          children: [
+                                            customShimmer(
+                                              Text(
+                                                'Wind speed: ${weather.windSpeed} m/s',
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .headlineMedium,
+                                              ),
+                                            ),
+                                            customShimmer(
+                                              Text(
+                                                'Humidity: ${weather.humidity}%',
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .headlineMedium,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                );
-              }).toList(),
-              SizedBox(height: 12.h), // <--- Alt boşluk
-            ],
+                  );
+                }).toList(),
+                SizedBox(height: 12.h),
+              ],
+            ),
           ),
         );
       } else if (state is WeatherError) {
@@ -179,12 +194,12 @@ BlocBuilder<WeatherCubit, WeatherState> buildPopularCities() {
 // *** SHIMMER EFFEKT ***
 Widget _buildShimmerCard() {
   return Padding(
-    padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+    padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
     child: Shimmer.fromColors(
       baseColor: Colors.grey.shade100,
       highlightColor: Colors.white,
       child: Container(
-        height: 150,
+        height: 18.h,
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(10),

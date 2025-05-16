@@ -51,6 +51,7 @@ class CustomTextField extends StatelessWidget {
                 cursorColor: AppColors.shadow,
                 decoration: InputDecoration(
                   hintText: hintText,
+                  
                   hintStyle:
                       Theme.of(context).textTheme.headlineMedium?.copyWith(
                             color: AppColors.icon,

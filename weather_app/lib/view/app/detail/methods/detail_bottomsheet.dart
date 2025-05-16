@@ -13,22 +13,22 @@ import 'package:weather_app/widgetsGlobal/shimmer.dart';
 Widget detailBottomSheet(WeatherModel weather) {
   final List<MoredetailsModel> moreDetails = [
     MoredetailsModel(
-        backgroundColor: Colors.pink,
+        backgroundColor: Color(0xFF129990),
         title: "humidity",
         value: "${weather.humidity}%",
         image: IconImages.rainIcon),
     MoredetailsModel(
-        backgroundColor: Colors.blue,
+        backgroundColor: Color(0xFF393E46),
         title: "wind\nSpeed",
         value: "${weather.windSpeed}m/s",
         image: IconImages.tornadoIcon),
     MoredetailsModel(
-        backgroundColor: Colors.green,
+        backgroundColor: Color(0xFFC95792),
         title: "temp\nMin",
         value: "${weather.tempMin}°",
         image: IconImages.minTemp),
     MoredetailsModel(
-      backgroundColor: Colors.orange,
+      backgroundColor: Color(0xFF948979),
       title: "temp\nMax",
       value: "${weather.tempMax}°",
       image: IconImages.maxTemp,
@@ -36,6 +36,21 @@ Widget detailBottomSheet(WeatherModel weather) {
   ];
   final DraggableScrollableController _sheetController =
       DraggableScrollableController();
+  final double max = 0.5;
+  final double min = 0.075;
+  final double initial = 0.075;
+  WidgetsBinding.instance.addPostFrameCallback((_) {
+    Future.delayed(const Duration(milliseconds: 600), () async {
+      if (_sheetController.isAttached) {
+        await _sheetController.animateTo(
+          max,
+          duration: Duration(milliseconds: 700),
+          curve: Curves.easeOut,
+        );
+      }
+    });
+  });
+
   return Positioned(
     bottom: 0,
     left: 0,
@@ -48,21 +63,21 @@ Widget detailBottomSheet(WeatherModel weather) {
           width: 90.w,
           child: DraggableScrollableSheet(
             controller: _sheetController,
-            initialChildSize: 0.075,
-            minChildSize: 0.075,
-            maxChildSize: 0.5,
+            initialChildSize: initial,
+            minChildSize: min,
+            maxChildSize: max,
             builder: (context, scrollController) {
               return GestureDetector(
                 onTap: () async {
-                  if (_sheetController.size <= 0.11) {
+                  if (_sheetController.size < max) {
                     await _sheetController.animateTo(
-                      0.5,
+                      max,
                       duration: Duration(milliseconds: 300),
                       curve: Curves.easeInOut,
                     );
                   } else {
                     await _sheetController.animateTo(
-                      0.075,
+                      min,
                       duration: Duration(milliseconds: 300),
                       curve: Curves.easeInOut,
                     );
@@ -91,7 +106,7 @@ Widget detailBottomSheet(WeatherModel weather) {
                           children: moreDetails.map((detail) {
                             return Expanded(
                               child: Container(
-                                height: 180,
+                                height: 24.h,
                                 child: Stack(
                                   alignment: Alignment.bottomCenter,
                                   children: [
@@ -102,41 +117,33 @@ Widget detailBottomSheet(WeatherModel weather) {
                                           padding: const EdgeInsets.symmetric(
                                               horizontal: 5),
                                           child: customShadowContainer(
-                                            height: 150,
+                                            height: 20.h,
                                             width: double.infinity,
                                             backgroundColor:
                                                 detail.backgroundColor,
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 2),
-                                              child: Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceEvenly,
-                                                children: [
-                                                  FittedBox(
-                                                    child: Text(
-                                                      detail.title,
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .headlineLarge,
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                    ),
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceEvenly,
+                                              children: [
+                                                FittedBox(
+                                                  child: Text(
+                                                    detail.title,
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .headlineLarge,
+                                                    textAlign: TextAlign.center,
                                                   ),
-                                                  FittedBox(
-                                                    child: Text(
-                                                      detail.value,
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .headlineLarge,
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                    ),
+                                                ),
+                                                FittedBox(
+                                                  child: Text(
+                                                    detail.value,
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .headlineLarge,
+                                                    textAlign: TextAlign.center,
                                                   ),
-                                                ],
-                                              ),
+                                                ),
+                                              ],
                                             ),
                                           ),
                                         ),
@@ -146,14 +153,10 @@ Widget detailBottomSheet(WeatherModel weather) {
                                     CachedNetworkImage(
                                       imageUrl: detail.image,
                                       fit: BoxFit.scaleDown,
-                                      height: 50,
+                                      height: 30.sp,
                                       placeholder: (context, url) =>
                                           customShimmer(
-                                        Container(
-                                          width: 50,
-                                          height: 50,
-                                          color: Colors.grey[300],
-                                        ),
+                                        SizedBox(),
                                       ),
                                       errorWidget: (context, url, error) =>
                                           const Icon(Icons.error),

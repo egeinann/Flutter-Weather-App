@@ -34,7 +34,7 @@ app.get('/cities', (req, res) => {
   });
 });
 
-// 🔁 Ortak isDay hesaplama fonksiyonu
+// Ortak isDay hesaplama fonksiyonu
 function getIsDay(sunrise, sunset) {
   const currentTime = Math.floor(Date.now() / 1000); // Şu anki zaman (saniye cinsinden)
   return currentTime >= sunrise && currentTime < sunset;

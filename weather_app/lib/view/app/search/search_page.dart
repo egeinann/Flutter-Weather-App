@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:weather_app/data/sharedPref.dart';
-import 'package:weather_app/services/weather_service.dart';
+import 'package:weather_app/servicesAPI/weather_service.dart';
 import 'package:weather_app/utils/colors.dart';
 import 'package:weather_app/models/weather_model.dart';
 import 'package:weather_app/utils/icons.dart';
@@ -165,7 +165,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     Icon(
-                                      AppIcons.cloud,
+                                      AppIcons.location,
                                       size: 20.sp,
                                       color: AppColors.background,
                                     ),
@@ -261,7 +261,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
         alignment: Alignment.topCenter,
         children: [
           SizedBox(
-            height: 41.h,
+            height: 42.h,
             width: 90.w,
             child: Align(
               alignment: Alignment.bottomCenter,
@@ -413,7 +413,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                               .textTheme
                               .headlineMedium!
                               .copyWith(
-                                color: Colors.grey.shade700,
+                                color: Colors.grey.shade400,
                               ),
                         ),
                         trailing: Text(

@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:weather_app/blocs/citySearch_bloc/city_event.dart';
 import 'package:weather_app/blocs/citySearch_bloc/city_state.dart';
-import 'package:weather_app/services/city_service.dart';
+import 'package:weather_app/servicesAPI/city_service.dart';
 
 class CityCubit extends Bloc<CityEvent, CityState> {
   final CityService _cityService;

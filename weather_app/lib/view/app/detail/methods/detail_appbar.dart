@@ -35,14 +35,15 @@ Widget detailAppBar(BuildContext context, WeatherModel weather) {
         ),
         Row(
           children: [
+            Text(
+              "${weather.cityName} ${weather.country}",
+              style: Theme.of(context).textTheme.displayMedium,
+            ),
+            SizedBox(width: 5),
             Icon(
               AppIcons.location,
               color: AppColors.background,
             ),
-            Text(
-              "${weather.cityName} ${weather.country}",
-              style: Theme.of(context).textTheme.displayMedium,
-            )
           ],
         ),
       ],
