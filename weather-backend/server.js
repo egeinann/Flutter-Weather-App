@@ -15,6 +15,11 @@ app.use(cors());
 // Assets klasörünü public hale getir
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
 
+// sunucu durumu? çalışıyor mu?
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: 'OK' });
+});
+
 // Şehirler listesi
 app.get('/cities', (req, res) => {
   const cityListPath = path.join(__dirname, 'city.list.json');

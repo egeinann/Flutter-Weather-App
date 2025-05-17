@@ -28,4 +28,14 @@ class WeatherService {
       throw Exception('Hava durumu alınırken hata oluştu: $e');
     }
   }
+
+  Future<bool> isServerActive() async {
+    try {
+      final url = Uri.parse('http://192.168.0.10:3000/health');
+      final response = await http.get(url).timeout(Duration(seconds: 1));
+      return response.statusCode == 200;
+    } catch (_) {
+      return false;
+    }
+  }
 }

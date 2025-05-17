@@ -33,7 +33,6 @@ class HomePage extends StatelessWidget {
                   child: Image(
                     image: AssetImage(OnboardingImages.welcome_3),
                     fit: BoxFit.scaleDown,
-                                
                   ),
                 ),
                 Text(

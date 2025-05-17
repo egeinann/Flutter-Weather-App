@@ -43,10 +43,12 @@ class DetailPage extends StatelessWidget {
                     detailAppBar(context, weather),
                     detailBuildWeather(weather, context),
                     detailBuildIcon(weather),
+                    
                   ],
                 ),
               ),
               detailBottomSheet(weather),
+              
             ],
           ),
         ),

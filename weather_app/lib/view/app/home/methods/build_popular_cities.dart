@@ -7,7 +7,9 @@ import 'package:shimmer/shimmer.dart';
 import 'package:weather_app/blocs/weatherBloc/weather_cubit.dart';
 import 'package:weather_app/blocs/weatherBloc/weather_state.dart';
 import 'package:weather_app/utils/colors.dart';
+import 'package:weather_app/utils/icons.dart';
 import 'package:weather_app/view/app/detail/page/detail_page.dart';
+import 'package:weather_app/widgetsGlobal/button.dart';
 import 'package:weather_app/widgetsGlobal/shimmer.dart';
 
 BlocBuilder<WeatherCubit, WeatherState> buildPopularCities() {
@@ -180,9 +182,20 @@ BlocBuilder<WeatherCubit, WeatherState> buildPopularCities() {
         );
       } else if (state is WeatherError) {
         return Center(
-          child: Text(
-            state.message,
-            style: const TextStyle(color: Colors.red),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                state.message,
+                style: const TextStyle(color: Colors.red),
+              ),
+              customIconButton(
+                onPressed: () => context.read<WeatherCubit>().refreshWeather(),
+                icon: AppIcons.refresh,
+              )
+            ],
           ),
         );
       }

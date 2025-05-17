@@ -14,4 +14,5 @@ class AppIcons{
   static const IconData close = Icons.close;
   static const IconData history = Icons.history;
   static const IconData location = Icons.location_on;
+  static const IconData refresh = Icons.refresh;
 }

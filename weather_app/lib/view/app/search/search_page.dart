@@ -188,33 +188,71 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                 child: Align(
                   alignment: Alignment.bottomCenter,
                   child: FloatingActionButton.extended(
-                    label: Text(
-                      "Last searched",
-                      style: Theme.of(context).textTheme.headlineLarge,
-                    ),
-                    heroTag: "hometosearch",
-                    backgroundColor: AppColors.container,
-                    splashColor: AppColors.background,
-                    foregroundColor: AppColors.background,
-                    elevation: 20,
-                    shape: ContinuousRectangleBorder(
-                      side: BorderSide(
-                        width: 2,
-                        color: AppColors.shadow,
+                      label: Text(
+                        "Last searched",
+                        style: Theme.of(context).textTheme.headlineLarge,
                       ),
-                      borderRadius: BorderRadius.circular(23),
-                    ),
-                    onPressed: () {
-                      FocusScope.of(context).unfocus();
-                      _focusNode.unfocus();
-                      _controller.clear();
-                      showModalBottomSheet(
-                        context: context,
-                        backgroundColor: Colors.transparent,
-                        builder: (context) => buildRecentCitiesSheet(),
-                      );
-                    },
-                  ),
+                      heroTag: "hometosearch",
+                      backgroundColor: AppColors.container,
+                      splashColor: AppColors.background,
+                      foregroundColor: AppColors.background,
+                      elevation: 20,
+                      shape: ContinuousRectangleBorder(
+                        side: BorderSide(
+                          width: 2,
+                          color: AppColors.shadow,
+                        ),
+                        borderRadius: BorderRadius.circular(23),
+                      ),
+                      onPressed: () {
+                        FocusScope.of(context).unfocus();
+                        _focusNode.unfocus();
+                        _controller.clear();
+
+                        showModalBottomSheet(
+                          context: context,
+                          backgroundColor: Colors.transparent,
+                          builder: (context) => FutureBuilder<bool>(
+                            future: WeatherService().isServerActive(),
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return Center(
+                                    child: CircularProgressIndicator());
+                              }
+                              if (snapshot.hasError ||
+                                  !(snapshot.data ?? false)) {
+                                return AlertDialog(
+                                  title: Text(
+                                    'Error',
+                                    style:
+                                        Theme.of(context).textTheme.bodyLarge,
+                                  ),
+                                  content: Text(
+                                    'Server is down!',
+                                    style:
+                                        Theme.of(context).textTheme.bodyMedium,
+                                  ),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () =>
+                                          Navigator.of(context).pop(),
+                                      child: Text(
+                                        'Close',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium,
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              }
+                              // Sunucu aktifse veriyi göster
+                              return buildRecentCitiesSheet();
+                            },
+                          ),
+                        );
+                      }),
                 ),
               ),
             ],

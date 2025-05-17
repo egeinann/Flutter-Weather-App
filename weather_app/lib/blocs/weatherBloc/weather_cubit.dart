@@ -54,14 +54,14 @@ class WeatherCubit extends Cubit<WeatherState> {
       if (weatherList.isNotEmpty) {
         emit(WeatherLoaded(weatherList));
       } else {
-        emit(WeatherError("Hiçbir şehrin hava durumu alınamadı!"));
+        emit(WeatherError("Could not get weather information!"));
       }
     } catch (e) {
-      emit(WeatherError("Veriler alınamadı: $e"));
+      emit(WeatherError("Could not get data: $e"));
     }
   }
 
-  // *** YENİLEME (RefreshIndicator için) ***
+  // *** YENİLEME ***
   Future<void> refreshWeather() async {
     emit(WeatherLoading());
 
@@ -103,7 +103,7 @@ class WeatherCubit extends Cubit<WeatherState> {
       if (weatherList.isNotEmpty) {
         emit(WeatherLoaded(weatherList));
       } else {
-        emit(WeatherError("Yenilemede veri alınamadı!"));
+        emit(WeatherError("Try again!"));
       }
     } catch (e) {
       emit(WeatherError("Yenileme hatası: $e"));
